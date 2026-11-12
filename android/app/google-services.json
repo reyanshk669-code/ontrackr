@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "835910946490",
+    "project_id": "ontrack-42597",
+    "storage_bucket": "ontrack-42597.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835910946490:android:8096d53e8a1c18ec107c83",
+        "android_client_info": {
+          "package_name": "com.reyansh.ontrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg9KFCQiJx6pcDskPULt6lwa6POQ86zRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>OnTrack - AI Habit & Focus Tracker</title>
+
+  <!-- PWA & Mobile Meta Tags -->
+  <meta name="description" content="Next-gen habit tracker combining Loop Habit Tracker algorithms, Aria AI Habit Coach, Atomic Habit Stacks, and Identity Leveling.">
+  <meta name="theme-color" content="#FAF7FC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="OnTrack">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="static/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="static/icons/apple-touch-icon.png">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="static/vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/themes.css">
+  <link rel="stylesheet" href="static/css/mobile-app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="static/css/neumorphic-auth.css">
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="app-header">
+    <div class="brand-wrapper" style="display:flex; align-items:center; gap:8px;">
+      <img src="static/icons/logo.png" alt="OnTrack Logo" style="width:28px; height:28px; border-radius:8px; object-fit:cover; box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+      <div class="brand-title">OnTrack</div>
+    </div>
+    <div class="header-actions">
+      <!-- Sound FX Toggle -->
+      <button id="sound-toggle-btn" class="header-icon-btn" title="Toggle Sound FX">
+        <span id="sound-icon-indicator">🔊</span>
+      </button>
+      <!-- Theme Switcher -->
+      <button id="theme-toggle-btn" class="header-icon-btn" title="Toggle Theme (Luminous Pastel / Dark / Paper)">
+        <span id="theme-icon-indicator">☀️</span>
+      </button>
+      <!-- User Profile & Auth Trigger -->
+      <button class="header-icon-btn" data-bs-toggle="modal" data-bs-target="#modal-firebase-auth" title="User Account & Cloud Sync">
+        <span id="header-auth-avatar">👤</span>
+      </button>
+      <!-- Notification Bell with Red Badge (Mockup match) -->
+      <button class="header-icon-btn" title="Notifications">
+        <span>🔔</span>
+        <span class="badge-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Offline Status Banner -->
+  <div id="offline-indicator-toast" style="display:none; position:fixed; top:calc(var(--header-height) + env(safe-area-inset-top, 0px)); left:0; right:0; background:#EF4444; color:#FFF; font-size:0.75rem; font-weight:700; text-align:center; padding:6px; z-index:1025;">
+    ⚠️ Offline Mode Active — Local storage is keeping your streaks intact.
+  </div>
+
+  <!-- Main Views Container -->
+  <main class="main-content">
+
+    <!-- ================= TAB 1: HOME / HABIT QUEUE (MATCHING SCREEN 2 & 3) ================= -->
+    <section id="tab-tracker" class="tab-content-view active">
+      
+      <!-- Demo Mode Alert Banner -->
+      <div id="demo-mode-banner" style="display:none; background:linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color:#FFF; border-radius:16px; padding:10px 14px; margin-bottom:16px; box-shadow:0 4px 15px rgba(99, 102, 241, 0.3); align-items:center; justify-content:space-between; gap:10px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.2rem;">👀</span>
+          <div>
+            <div style="font-size:0.82rem; font-weight:800; line-height:1.2;">Demo Mode Active</div>
+            <div style="font-size:0.72rem; opacity:0.9;">Viewing sample tasks & simulated data</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-light rounded-pill px-3 py-1" style="font-size:0.75rem; font-weight:800; color:#6366F1;" onclick="FirebaseAuthManager.exitDemoMode()">
+          Exit Demo
+        </button>
+      </div>
+
+      <!-- Dynamic Greeting -->
+      <div class="user-greeting-section">
+        <div class="greeting-lead">Good</div>
+        <div class="greeting-name"><span id="greeting-period">Evening</span><span id="greeting-user-name"></span> 👋</div>
+      </div>
+
+      <!-- Aria Oracle Predictive Failure Warning Banner -->
+      <div id="aria-oracle-banner-container" style="display:none; margin-bottom:18px;"></div>
+
+      <!-- 4 KPI Cards (Screen 2 exact match) -->
+      <div class="kpi-cards-grid">
+        <!-- Card 1: Faltering Habits -->
+        <div class="kpi-stat-card">
+          <div class="kpi-top-row">
+            <div class="kpi-icon-pill peach">⚠️</div>
+            <span class="kpi-card-title">Faltering Habits</span>
+          </div>
+          <div id="kpi-faltering-count" class="kpi-big-number">00</div>
+          <div class="kpi-trend-sub">All habits on track</div>
+        </div>
+
+        <!-- Card 2: Revival / Consistency Rate -->
+        <div class="kpi-stat-card">
+          <div class="kpi-top-row">
+            <div class="kpi-icon-pill mint">🔄</div>
+            <span class="kpi-card-title">Consistency Rate</span>
+          </div>
+          <div id="kpi-today-rate" class="kpi-big-number">0%</div>
+          <div class="kpi-trend-sub positive" id="kpi-today-trend">Day-by-day progress</div>
+        </div>
+
+        <!-- Card 3: Streak Shields -->
+        <div class="kpi-stat-card">
+          <div class="kpi-top-row">
+            <div class="kpi-icon-pill purple">🛡️</div>
+            <span class="kpi-card-title">Streak Shields</span>
+          </div>
+          <div id="kpi-streak-shields" class="kpi-big-number">0</div>
+          <div class="kpi-trend-sub" id="kpi-shields-sub">Earned on Level Up</div>
+        </div>
+
+        <!-- Card 4: RPG Mastery Rank -->
+        <div class="kpi-stat-card">
+          <div class="kpi-top-row">
+            <div class="kpi-icon-pill sky">⭐</div>
+            <span class="kpi-card-title">RPG Rank</span>
+          </div>
+          <div id="kpi-rpg-level" class="kpi-big-number">Lvl 1</div>
+          <div class="kpi-trend-sub" id="kpi-rpg-title">Focus Novice</div>
+        </div>
+      </div>
+
+      <!-- Section Headline: Habit Queue -->
+      <div class="section-headline-row">
+        <h4 class="section-title">
+          <span>Habit Queue</span>
+          <span id="active-habits-count-badge" class="section-counter">0 Active</span>
+        </h4>
+      </div>
+
+      <!-- Status Filter Pills (Screen 3: Ongoing 3, To do 3, Done 4) -->
+      <div class="status-pills-row">
+        <button class="status-filter-pill active" data-filter="all">
+          <span class="pill-dot purple"></span> All Habits
+        </button>
+        <button class="status-filter-pill" data-filter="high">
+          <span class="pill-dot mint"></span> High Priority
+        </button>
+        <button class="status-filter-pill" data-filter="medium">
+          <span class="pill-dot sky"></span> Medium
+        </button>
+        <button class="status-filter-pill" data-filter="low">
+          <span class="pill-dot peach"></span> Low / At Risk
+        </button>
+      </div>
+
+      <!-- Habit Cards Queue with Segmented Progress & Loop Checks -->
+      <div id="habit-queue-container" class="habit-queue-list">
+        <!-- Rendered by app.js with Segmented Progress Bars & Loop Checks -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="matrix-empty-state" style="display:none; padding:48px 16px; text-align:center; color:var(--text-muted);">
+        <div style="font-size:3rem; margin-bottom:12px;">🌱</div>
+        <h5 style="font-weight:800; color:var(--text-primary); margin-bottom:6px;">Your Habit Canvas is Fresh</h5>
+        <p style="font-size:0.88rem; max-width:320px; margin:0 auto 18px auto;">You have no tasks yet! Build your daily rituals by creating your first habit.</p>
+        <button class="btn btn-primary rounded-pill px-4 py-2 shadow-sm font-weight-bold" data-bs-toggle="modal" data-bs-target="#modal-add-habit" style="font-weight:700;">
+          + Create Your First Habit
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: HABIT STACKING & SMART TRIGGERS ================= -->
+    <section id="tab-stacks" class="tab-content-view">
+      <div class="section-headline-row">
+        <h4 class="section-title">
+          <span>⛓️ Atomic Habit Stacks</span>
+        </h4>
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modal-add-stack" style="font-weight:700;">
+          + Add Stack
+        </button>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+        Anchor new habits onto existing daily routines (<em>Atomic Habits</em> by James Clear).
+      </p>
+
+      <!-- Habit Stacks Flow Visualizer -->
+      <div id="habit-stacks-container">
+        <!-- Rendered by advanced-ui.js -->
+      </div>
+
+      <hr style="border-color:var(--border-color); margin:24px 0 16px 0;">
+
+      <!-- Context-Aware Smart Triggers -->
+      <div class="section-headline-row">
+        <h4 class="section-title">
+          <span>⚡ Context-Aware Smart Triggers</span>
+        </h4>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+        Automatic habit prompts triggered by physical location, time of day, or device focus mode.
+      </p>
+      <div id="smart-triggers-container">
+        <!-- Rendered by advanced-ui.js -->
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: ARIA AI HABIT COACH (SCREEN 1 EXACT MATCH) ================= -->
+    <section id="tab-aria" class="tab-content-view">
+      <div class="aria-view-container">
+        
+        <!-- Hero Sparkle Halo -->
+        <div class="aria-hero-header">
+          <div class="aria-sparkle-halo">
+            <span class="star">✦</span>
+          </div>
+          <h2 class="aria-greeting-title">Hey, I'm <span>Aria</span></h2>
+          <p class="aria-subtext">Revive faltering habits with a clear AI-powered comeback plan and atomic stacks.</p>
+        </div>
+
+        <!-- Quick Prompt Pills (Screen 1 Glassmorphic Cards) -->
+        <div class="aria-prompt-pills-wrap">
+          <button class="aria-prompt-pill" data-prompt="Analyze all my habits and find where I struggle">
+            <div class="prompt-left">
+              <span>📊</span>
+              <span>Analyze all my habits</span>
+            </div>
+            <span class="prompt-arrow">›</span>
+          </button>
+          <button class="aria-prompt-pill" data-prompt="Define an atomic habit stack for my study schedule">
+            <div class="prompt-left">
+              <span>⚡</span>
+              <span>Define my habit stack</span>
+            </div>
+            <span class="prompt-arrow">›</span>
+          </button>
+          <button class="aria-prompt-pill" data-prompt="Create a 7 days comeback sprint for my missed habits">
+            <div class="prompt-left">
+              <span>📅</span>
+              <span>7 days comeback plan</span>
+            </div>
+            <span class="prompt-arrow">›</span>
+          </button>
+          <button class="aria-prompt-pill" data-prompt="I feel tired and unmotivated today, how do I start?">
+            <div class="prompt-left">
+              <span>❤️</span>
+              <span>Motivation to restart</span>
+            </div>
+            <span class="prompt-arrow">›</span>
+          </button>
+        </div>
+
+        <!-- Interactive Chat Stream -->
+        <div id="aria-chat-messages" class="aria-chat-stream">
+          <div class="aria-message aria-bot-msg">
+            <div class="aria-avatar-icon">✦</div>
+            <div class="msg-bubble" id="aria-welcome-bubble">
+              Welcome to OnTrack! You're on track with your study and consistency habits today. What would you like to accomplish next?
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Input Bar (Screen 1 bottom) -->
+        <div class="aria-input-bar-wrap">
+          <button class="btn-aria-add-context" title="Attach context">+</button>
+          <input type="text" id="aria-chat-input" class="aria-input-field" placeholder="Ask Aria anything about your habits...">
+          <button id="btn-aria-send" class="btn-aria-send-round" title="Send">➤</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: IDENTITY LEVELING RPG & DUELS ================= -->
+    <section id="tab-rpg" class="tab-content-view">
+      
+      <!-- RPG Hero Character Sheet -->
+      <div class="rpg-hero-card">
+        <div class="rpg-profile-header">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--accent-primary);">Character Sheet</span>
+              <span id="rpg-aura-badge" class="rpg-aura-tag aura-scholar">✦ Scholar Tier Aura</span>
+            </div>
+            <h4 id="rpg-char-level" class="rpg-char-title">Level 7 Focus Scholar</h4>
+          </div>
+          <button class="btn-use-shield" onclick="AdvancedFeatures.useShield()">
+            🛡️ <span id="rpg-shields-count">2 Available</span>
+          </button>
+        </div>
+
+        <!-- XP Progress Track -->
+        <div class="rpg-xp-track-bg">
+          <div id="rpg-xp-bar-fill" class="rpg-xp-track-fill" style="width: 69%;"></div>
+        </div>
+        <div class="rpg-xp-numbers">
+          <span>XP Progress</span>
+          <span id="rpg-xp-text">3,450 / 5,000 XP</span>
+        </div>
+
+        <!-- 5 Attributes Grid -->
+        <div class="rpg-attributes-grid">
+          <div class="rpg-attr-item">
+            <div class="attr-header">
+              <span>🧠 Logic</span>
+              <span id="stat-logic-val">88/100</span>
+            </div>
+            <div class="attr-bar-bg"><div id="stat-logic-bar" class="attr-bar-fill" style="width:88%;"></div></div>
+          </div>
+
+          <div class="rpg-attr-item">
+            <div class="attr-header">
+              <span>⚡ Discipline</span>
+              <span id="stat-discipline-val">92/100</span>
+            </div>
+            <div class="attr-bar-bg"><div id="stat-discipline-bar" class="attr-bar-fill" style="width:92%;"></div></div>
+          </div>
+
+          <div class="rpg-attr-item">
+            <div class="attr-header">
+              <span>🛡️ Resilience</span>
+              <span id="stat-resilience-val">79/100</span>
+            </div>
+            <div class="attr-bar-bg"><div id="stat-resilience-bar" class="attr-bar-fill" style="width:79%;"></div></div>
+          </div>
+
+          <div class="rpg-attr-item">
+            <div class="attr-header">
+              <span>🏃 Endurance</span>
+              <span id="stat-endurance-val">85/100</span>
+            </div>
+            <div class="attr-bar-bg"><div id="stat-endurance-bar" class="attr-bar-fill" style="width:85%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accountability Duels (1-on-1 vs Opponents) -->
+      <div class="section-headline-row">
+        <h4 class="section-title">
+          <span>⚔️ Accountability Duels</span>
+        </h4>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+        Friendly habit competitions with real-time comparative progress meters.
+      </p>
+      <div id="accountability-duels-container">
+        <!-- Rendered by advanced-ui.js -->
+      </div>
+
+      <hr style="border-color:var(--border-color); margin:24px 0 16px 0;">
+
+      <!-- Async Tribe Pacts (Study Guilds) -->
+      <div class="section-headline-row">
+        <h4 class="section-title">
+          <span>🛡️ Async Tribe Pacts</span>
+        </h4>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+        Study guilds with collective adherence goals and async emoji cheers.
+      </p>
+      <div id="tribe-pacts-container">
+        <!-- Rendered by advanced-ui.js -->
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 5: SETTINGS & PERFORMANCE ANALYSER ================= -->
+    <section id="tab-settings" class="tab-content-view">
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        
+        <!-- Multi-Timeframe Activity Analyser Studio (Weekly / Monthly / Yearly on Every Activity) -->
+        <div class="kpi-stat-card scroll-reveal" id="card-timeframe-analyser">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div>
+              <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--accent-primary); letter-spacing:0.5px;">Performance Studio</div>
+              <h5 style="margin:0; font-weight:800; color:var(--text-primary);">📈 Day-after-Day Consistency Analysis</h5>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 shadow-sm" id="analyser-period-badge">Weekly View</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">
+            Day-by-day analysis tracking your habit completion rate, consistency curve, and adherence trends as you check in each day.
+          </p>
+
+          <!-- Timeframe Selector Pills -->
+          <div class="timeframe-pills-row mb-3">
+            <button class="timeframe-pill active" data-period="weekly">
+              <span>📅 Weekly (7d)</span>
+            </button>
+            <button class="timeframe-pill" data-period="monthly">
+              <span>🗓️ Monthly (30d)</span>
+            </button>
+            <button class="timeframe-pill" data-period="yearly">
+              <span>📈 Yearly (365d)</span>
+            </button>
+          </div>
+
+          <!-- Timeframe Executive KPIs -->
+          <div class="analyser-kpi-grid mb-3">
+            <div class="analyser-kpi-item">
+              <span class="analyser-kpi-label">Consistency Rate</span>
+              <span id="analyser-kpi-adherence" class="analyser-kpi-value text-primary">0%</span>
+            </div>
+            <div class="analyser-kpi-item">
+              <span class="analyser-kpi-label">Completed Checks</span>
+              <span id="analyser-kpi-completed" class="analyser-kpi-value text-success">0 / 0</span>
+            </div>
+            <div class="analyser-kpi-item">
+              <span class="analyser-kpi-label">Focus Logged</span>
+              <span id="analyser-kpi-focus" class="analyser-kpi-value" style="color:#9333EA;">0 mins</span>
+            </div>
+            <div class="analyser-kpi-item">
+              <span class="analyser-kpi-label">Pacesetter MVP</span>
+              <span id="analyser-kpi-mvp" class="analyser-kpi-value text-info" style="font-size:0.95rem;">None</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Trend Graph -->
+          <div style="background:var(--bg-secondary); border-radius:16px; padding:12px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:0.75rem; font-weight:700; color:var(--text-secondary);">Day-by-Day Consistency Curve</span>
+              <span id="analyser-chart-legend" style="font-size:0.7rem; color:var(--text-muted);">● Daily Consistency % &nbsp;■ Tasks Completed</span>
+            </div>
+            <div style="position:relative; height:210px; width:100%;">
+              <canvas id="timeframe-analytics-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Every Activity Breakdown Section -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h6 style="margin:0; font-weight:800; font-size:0.9rem;">Activity Breakdown (All Habits)</h6>
+            <span id="analyser-activities-count" style="font-size:0.75rem; color:var(--text-muted);">0 Tracked</span>
+          </div>
+
+          <div id="analyser-activities-list" style="display:flex; flex-direction:column; gap:10px;">
+            <!-- Rendered by timeframe-analyser.js -->
+          </div>
+        </div>
+
+        <!-- App Identity & Android Readiness Card -->
+        <div class="kpi-stat-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <h6 style="margin:0; font-weight:800;">📱 OnTrack: Play Store Ready</h6>
+            <span class="badge bg-success shadow-sm">TWA Verified</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px;">
+            Built with Loop Habit Tracker's EMA algorithm, offline SQLite database, and complete Android Studio companion project.
+          </p>
+          <div style="background:var(--bg-secondary); border-radius:10px; padding:10px; font-size:0.75rem; font-family:monospace;">
+            Package: com.ontrack.app<br/>
+            Engine: AndroidX WebKit + WebViewAssetLoader
+          </div>
+        </div>
+
+        <!-- User Authentication Card -->
+        <div class="kpi-stat-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <h6 style="margin:0; font-weight:800;">👤 User Account & Cloud Sync</h6>
+            <span class="badge bg-primary shadow-sm">Secure Sync</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:10px;">
+            Sync your habit streaks, RPG character level, and atom stacks securely across all your Android devices.
+          </p>
+          <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-secondary); border-radius:12px; padding:10px 12px; margin-bottom:8px;">
+            <div>
+              <div id="firebase-auth-status-text" style="font-size:0.82rem; font-weight:700;">Guest / Fresh Account</div>
+              <div id="firebase-auth-user-email" style="font-size:0.72rem; color:var(--text-muted);">Not signed in</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm" onclick="FirebaseAuthManager.enterDemoMode(false)" style="font-size:0.78rem; font-weight:700;">
+                Demo Mode
+              </button>
+              <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modal-firebase-auth" style="font-size:0.78rem; font-weight:700;">
+                Account
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Encrypted Multi-Device Cloud Vault Card -->
+        <div class="kpi-stat-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <h6 style="margin:0; font-weight:800;">🔐 Encrypted Cloud Vault & Sync</h6>
+            <span class="badge bg-primary shadow-sm">Zero Subscriptions</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">
+            Export or restore an AES-encrypted backup vault protected with your private passphrase. Works seamlessly across phones and tablets.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button id="btn-export-encrypted-vault" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm" style="font-size:0.8rem; font-weight:700;">
+              ⬇ Export Encrypted Vault
+            </button>
+            <button id="btn-import-encrypted-vault" class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm" style="font-size:0.8rem; font-weight:700;">
+              ⬆ Restore Vault
+            </button>
+          </div>
+        </div>
+
+        <!-- User Profile & Focus Persona Card -->
+        <div class="kpi-stat-card scroll-reveal">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:1.3rem;">👤</span>
+              <div>
+                <h6 style="margin:0; font-weight:800; color:var(--text-primary);">User Profile & Focus</h6>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Configured during initial app onboarding</div>
+              </div>
+            </div>
+            <button id="btn-edit-onboarding-profile" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm" style="font-size:0.75rem; font-weight:700;">
+              ✏️ Edit
+            </button>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:var(--bg-secondary); border-radius:16px; padding:12px;">
+            <div>
+              <div style="font-size:0.7rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Age</div>
+              <div id="settings-display-age" style="font-weight:800; font-size:0.95rem; color:var(--text-primary); margin-top:2px;">Not specified</div>
+            </div>
+            <div>
+              <div style="font-size:0.7rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Designation</div>
+              <div id="settings-display-role" style="font-weight:800; font-size:0.88rem; color:var(--accent-primary); margin-top:2px;">🎓 Student</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferences Card with Tactile Mobile Toggle Switches -->
+        <div class="kpi-stat-card">
+          <h6 style="margin:0 0 14px 0; font-weight:800; display:flex; align-items:center; gap:6px;">
+            <span>⚙️</span>
+            <span>Preferences & Toggles</span>
+          </h6>
+          
+          <!-- Sound FX Toggle -->
+          <div class="toggle-setting-row">
+            <div class="toggle-setting-info">
+              <div class="toggle-setting-title">
+                <span>🔊</span> Sound Effects
+              </div>
+              <div class="toggle-setting-desc">Tactile Web Audio chimes on habit check-ins</div>
+            </div>
+            <label class="ontrack-switch">
+              <input type="checkbox" id="toggle-sound-fx" checked>
+              <span class="ontrack-slider"></span>
+            </label>
+          </div>
+
+          <!-- Dark Mode Toggle -->
+          <div class="toggle-setting-row">
+            <div class="toggle-setting-info">
+              <div class="toggle-setting-title">
+                <span>🌙</span> OLED Dark Mode
+              </div>
+              <div class="toggle-setting-desc">Switch between Luminous Light & Midnight Dark</div>
+            </div>
+            <label class="ontrack-switch">
+              <input type="checkbox" id="toggle-dark-mode">
+              <span class="ontrack-slider"></span>
+            </label>
+          </div>
+
+          <!-- Haptic Vibration Toggle -->
+          <div class="toggle-setting-row">
+            <div class="toggle-setting-info">
+              <div class="toggle-setting-title">
+                <span>📳</span> Haptic Vibration
+              </div>
+              <div class="toggle-setting-desc">Gentle device buzz on completing goals</div>
+            </div>
+            <label class="ontrack-switch switch-mint">
+              <input type="checkbox" id="toggle-haptic-fx" checked>
+              <span class="ontrack-slider"></span>
+            </label>
+          </div>
+
+          <!-- Auto-Shield Streak Protection Toggle -->
+          <div class="toggle-setting-row">
+            <div class="toggle-setting-info">
+              <div class="toggle-setting-title">
+                <span>🛡️</span> Auto-Freeze Shield
+              </div>
+              <div class="toggle-setting-desc">Automatically consume a shield to save broken streaks</div>
+            </div>
+            <label class="ontrack-switch">
+              <input type="checkbox" id="toggle-auto-shield" checked>
+              <span class="ontrack-slider"></span>
+            </label>
+          </div>
+
+          <!-- Micro-Dose Bad Day Protocol Toggle -->
+          <div class="toggle-setting-row">
+            <div class="toggle-setting-info">
+              <div class="toggle-setting-title">
+                <span>⚡</span> Micro-Dose Quick Buttons
+              </div>
+              <div class="toggle-setting-desc">Show 1-tap 2-minute starter buttons on habit cards</div>
+            </div>
+            <label class="ontrack-switch switch-amber">
+              <input type="checkbox" id="toggle-show-microdose" checked>
+              <span class="ontrack-slider"></span>
+            </label>
+          </div>
+
+          <!-- Daily Reminder Notifications Toggle -->
+          <div class="toggle-setting-row">
+            <div class="toggle-setting-info">
+              <div class="toggle-setting-title">
+                <span>🔔</span> Daily Study Reminders
+              </div>
+              <div class="toggle-setting-desc">Push notifications at your scheduled habit times</div>
+            </div>
+            <label class="ontrack-switch">
+              <input type="checkbox" id="toggle-daily-reminders" checked>
+              <span class="ontrack-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Streak Shield Policy Card -->
+        <div class="kpi-stat-card">
+          <h6 style="margin:0 0 8px 0; font-weight:800;">🛡️ Forgiving Streak & Shield Policy</h6>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px;">
+            Rest days marked as <em>Skipped</em> or protected with a <em>Freeze Shield</em> bridge your streak without resetting your count to zero.
+          </p>
+          <div style="font-size:0.75rem; color:var(--text-muted);">
+            • Earn 1 Streak Freeze Shield every time you level up in RPG.<br/>
+            • Exponential Moving Average (EMA) decays gracefully rather than dropping to zero.
+          </div>
+        </div>
+
+        <!-- Demo Data & Reset Controls -->
+        <div class="kpi-stat-card">
+          <h6 style="margin:0 0 8px 0; font-weight:800;">🌱 Sample Data & Database Controls</h6>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">
+            Populate sample student habits, stacks, and duels, or wipe all records.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button id="btn-seed-sample-data" class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm" style="font-size:0.8rem; font-weight:700;">
+              🌱 Reload Sample Data
+            </button>
+            <button id="btn-reset-database" class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm" style="font-size:0.8rem; font-weight:700;">
+              🗑 Wipe All Habits
+            </button>
+          </div>
+        </div>
+
+        <!-- App Info & Google Play Store Compliance Card -->
+        <div class="kpi-stat-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="static/icons/logo.png" alt="OnTrack" style="width:38px; height:38px; border-radius:10px; object-fit:cover; box-shadow:0 3px 10px rgba(0,0,0,0.18);">
+              <div>
+                <h6 style="margin:0; font-weight:800; font-size:0.95rem;">OnTrack Mobile</h6>
+                <span class="badge bg-primary-subtle text-primary rounded-pill px-2 py-0.5" style="font-size:0.68rem; font-weight:700;">Version 1.0.0 (Build 1)</span>
+              </div>
+            </div>
+            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1" style="font-size:0.72rem; font-weight:700;">✓ Play Store Ready</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">
+            Engineered for high-focus students & professionals with Loop Habit Algorithms, Aria AI, and offline-first storage.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <a href="static/privacy-policy.html" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm" style="font-size:0.78rem; font-weight:700; text-decoration:none;">
+              🔒 Privacy Policy
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm" style="font-size:0.78rem; font-weight:700;" onclick="alert('Thank you for supporting OnTrack! Rating dialog opens in Google Play Store.')">
+              ⭐ Rate on Google Play
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm" style="font-size:0.78rem; font-weight:700;" onclick="if(window.BackupManager){ window.BackupManager.exportBackup(); } else { alert('Preparing offline JSON export...'); }">
+              💾 Export Habits (JSON)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FLOATING ACTION BUTTON (+) ================= -->
+  <button class="fab-add-habit" data-bs-toggle="modal" data-bs-target="#modal-add-habit" title="Add New Habit">
+    +
+  </button>
+
+  <!-- ================= GLOWING CURVED NAVIGATION BAR (MATCHING MOCKUP) ================= -->
+  <nav class="bottom-dock-nav glowing-dock-nav" id="glowing-nav-menu" style="--active-tab-index: 0;">
+    <!-- Sliding Indicator: Arch Cutout & Elevated Glowing Circle -->
+    <div class="nav-indicator-track" id="nav-indicator-track">
+      <svg class="nav-indicator-arch" viewBox="0 0 86 38" preserveAspectRatio="none">
+        <path d="M 0 38 C 15 38 24 27 29 19 C 34 9 38 2 43 2 C 48 2 52 9 57 19 C 62 27 71 38 86 38 L 86 40 L 0 40 Z" />
+      </svg>
+      <div class="nav-glow-beam"></div>
+      <div class="nav-glowing-circle" id="nav-glowing-circle"></div>
+    </div>
+
+    <!-- 5 Clean Logo-Only Navigation Tabs -->
+    <ul class="glowing-nav-list" id="glowing-nav-list">
+      <!-- Tab 0: Home / Habits -->
+      <li class="dock-btn active" data-tab="tab-tracker" data-index="0" title="Habits">
+        <span class="dock-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9.5L12 3l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </span>
+      </li>
+
+      <!-- Tab 1: Stacks & Routines -->
+      <li class="dock-btn" data-tab="tab-stacks" data-index="1" title="Stacks">
+        <span class="dock-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </span>
+      </li>
+
+      <!-- Tab 2: Aria AI Coach (Speech Bubble Matching Image) -->
+      <li class="dock-btn" data-tab="tab-aria" data-index="2" title="Aria AI Coach">
+        <span class="dock-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+        </span>
+      </li>
+
+      <!-- Tab 3: Guild & RPG -->
+      <li class="dock-btn" data-tab="tab-rpg" data-index="3" title="Guild & Duels">
+        <span class="dock-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <polyline points="9 12 11 14 15 10"></polyline>
+          </svg>
+        </span>
+      </li>
+
+      <!-- Tab 4: Settings -->
+      <li class="dock-btn" data-tab="tab-settings" data-index="4" title="Settings">
+        <span class="dock-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </span>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ================= MODAL: ADD NEW HABIT ================= -->
+  <div class="modal fade" id="modal-add-habit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
+        <form id="form-add-habit">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title font-weight-bold">✨ Create Habit</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Habit Name</label>
+              <input type="text" name="name" class="form-control rounded-pill" placeholder="e.g., Practice Python & Algorithms" required>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Category</label>
+              <input type="text" name="category" class="form-control rounded-pill" placeholder="Web Dev, Core CS, Fitness..." list="category-suggestions" required>
+              <datalist id="category-suggestions">
+                <option value="Web Dev">
+                <option value="Core CS">
+                <option value="Exam Prep">
+                <option value="Fitness">
+                <option value="Reading">
+              </datalist>
+            </div>
+
+            <!-- Loop Palette Color Picker -->
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Habit Color</label>
+              <input type="hidden" id="input-habit-color" value="#7C5CFC">
+              <div id="palette-picker-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700;">Habit Type</label>
+                <select name="habit_type" id="input-habit-type" class="form-select rounded-pill">
+                  <option value="BOOLEAN">Boolean (Yes/No)</option>
+                  <option value="MEASURABLE">Measurable (Numeric)</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700;">Frequency</label>
+                <select name="frequency_type" class="form-select rounded-pill">
+                  <option value="DAILY">Every Day</option>
+                  <option value="SPECIFIC_DAYS">Specific Days</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="measurable-extra-inputs" style="display:none;" class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700;">Daily Target</label>
+                <input type="number" step="any" name="target_value" class="form-control rounded-pill" value="60">
+              </div>
+              <div class="col-6">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700;">Unit</label>
+                <input type="text" name="unit" class="form-control rounded-pill" placeholder="mins, pages...">
+              </div>
+            </div>
+
+            <!-- Tactile Habit Options Toggles -->
+            <div class="toggle-setting-row mt-3">
+              <div class="toggle-setting-info">
+                <div class="toggle-setting-title">🔥 High Priority Crunch</div>
+                <div class="toggle-setting-desc">Pins habit to top of daily study queue</div>
+              </div>
+              <label class="ontrack-switch switch-amber">
+                <input type="checkbox" name="is_priority_crunch" id="check-priority-crunch">
+                <span class="ontrack-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-setting-row">
+              <div class="toggle-setting-info">
+                <div class="toggle-setting-title">🛡️ Bad Day Micro-Dose</div>
+                <div class="toggle-setting-desc">Allow 2-min starter doses to preserve streak</div>
+              </div>
+              <label class="ontrack-switch switch-mint">
+                <input type="checkbox" name="allow_micro_dose" id="check-allow-micro-dose" checked>
+                <span class="ontrack-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-setting-row">
+              <div class="toggle-setting-info">
+                <div class="toggle-setting-title">🔔 Daily Notification</div>
+                <div class="toggle-setting-desc">Push reminder at scheduled study time</div>
+              </div>
+              <label class="ontrack-switch">
+                <input type="checkbox" name="daily_reminder" id="check-daily-reminder" checked>
+                <span class="ontrack-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" style="font-weight:700;">Save Habit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CREATE ATOMIC HABIT STACK ================= -->
+  <div class="modal fade" id="modal-add-stack" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
+        <form id="form-add-stack">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title font-weight-bold">⛓️ New Habit Stack</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Stack Name</label>
+              <input type="text" id="input-stack-name" class="form-control rounded-pill" placeholder="e.g. Evening Coding Sprint" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Anchor Trigger (Existing Routine)</label>
+              <input type="text" id="input-stack-anchor" class="form-control rounded-pill" placeholder="e.g. After I finish dinner at 7:30 PM" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Routine Action 1</label>
+              <input type="text" id="input-stack-routine1" class="form-control rounded-pill" placeholder="e.g. Complete 30 mins PostgreSQL practice" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Routine Action 2 (Optional)</label>
+              <input type="text" id="input-stack-routine2" class="form-control rounded-pill" placeholder="e.g. Review 5 flashcards">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.8rem; font-weight:700;">Immediate Reward</label>
+              <input type="text" id="input-stack-reward" class="form-control rounded-pill" placeholder="e.g. 5-min mindful break & claim +75 XP">
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" style="font-weight:700;">Create Stack</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: MEASURABLE CHECK-IN ================= -->
+  <div class="modal fade" id="modal-measurable-checkin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title font-weight-bold" id="modal-measurable-title">Log Measurable Habit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="modal-measurable-habit-id">
+          <input type="hidden" id="modal-measurable-date">
+
+          <div class="mb-3">
+            <label class="form-label" style="font-size:0.8rem; font-weight:700;">
+              Value Completed <span id="modal-measurable-unit-label"></span>
+            </label>
+            <input type="number" step="any" id="modal-measurable-value" class="form-control form-control-lg rounded-pill" placeholder="0">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" style="font-size:0.8rem; font-weight:700;">Study Revision Note</label>
+            <input type="text" id="modal-measurable-note" class="form-control rounded-pill" placeholder="e.g. practiced CTE window functions">
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="btn-save-measurable-modal" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" style="font-weight:700;">Save Check-In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: MOBILE IN-APP HABIT DEEP-DIVE ANALYTICS ================= -->
+  <div class="modal fade" id="modal-habit-analytics" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
+        <div class="modal-header border-0 pb-0">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <h5 class="modal-title font-weight-bold" id="analytics-habit-title">Habit Statistics</h5>
+            <span id="analytics-habit-category" class="badge rounded-pill bg-primary">Category</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loop Strength Hero Card -->
+          <div class="kpi-stat-card mb-3">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">
+                  Loop Habit Strength (EMA)
+                </div>
+                <div style="font-size:2rem; font-weight:800; color:var(--text-primary);">
+                  <span id="strength-hero-score">0%</span>
+                  <span id="strength-trend-badge" style="font-size:0.8rem; color:var(--mint); margin-left:6px;">↑ +0%</span>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:0.7rem; color:var(--text-muted);">Loop Algorithm</div>
+                <div style="font-size:0.78rem; font-weight:700;">Exponential Decay</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loop's Continuous Smooth Strength Graph -->
+          <div class="mb-4">
+            <span style="font-size:0.8rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary); display:block; margin-bottom:8px;">
+              📈 Strength Curve (Last 90 Days)
+            </span>
+            <div style="height:190px; position:relative;">
+              <canvas id="chart-habit-strength-curve"></canvas>
+            </div>
+          </div>
+
+          <!-- Interactive Monthly Calendar -->
+          <div class="kpi-stat-card mb-3">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <span id="calendar-current-month-label" style="font-weight:800; font-size:0.95rem;">November 2026</span>
+              <div style="display:flex; gap:6px;">
+                <button id="btn-cal-prev-month" class="btn btn-sm btn-outline-secondary rounded-circle" style="width:30px; height:30px; padding:0;">‹</button>
+                <button id="btn-cal-next-month" class="btn btn-sm btn-outline-secondary rounded-circle" style="width:30px; height:30px; padding:0;">›</button>
+              </div>
+            </div>
+            <div id="calendar-interactive-grid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center;"></div>
+          </div>
+
+          <!-- 4 Stat Cards -->
+          <div class="kpi-cards-grid mb-3">
+            <div class="kpi-stat-card">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--text-muted);">CURRENT STREAK</span>
+              <div id="stat-current-streak" style="font-size:1.3rem; font-weight:800;">0d</div>
+            </div>
+            <div class="kpi-stat-card">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--text-muted);">BEST STREAK</span>
+              <div id="stat-best-streak" style="font-size:1.3rem; font-weight:800;">0d</div>
+            </div>
+            <div class="kpi-stat-card">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--text-muted);">COMPLETIONS</span>
+              <div id="stat-total-completions" style="font-size:1.3rem; font-weight:800;">0</div>
+            </div>
+            <div class="kpi-stat-card">
+              <span style="font-size:0.7rem; font-weight:700; color:var(--text-muted);">EMA SCORE</span>
+              <div id="stat-habit-strength" style="font-size:1.3rem; font-weight:800;">0%</div>
+            </div>
+          </div>
+
+          <!-- Day of Week Radar -->
+          <div class="mb-4">
+            <span style="font-size:0.8rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary); display:block; margin-bottom:8px;">
+              📊 Day-of-Week Breakdown
+            </span>
+            <div style="height:160px; position:relative;">
+              <canvas id="chart-weekday-breakdown"></canvas>
+            </div>
+          </div>
+
+          <!-- Revision Micro-Notes -->
+          <div>
+            <span style="font-size:0.8rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary); display:block; margin-bottom:8px;">
+              📝 Study Revision Micro-Notes
+            </span>
+            <div id="revision-log-container" style="display:flex; flex-direction:column; gap:6px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: USER AUTHENTICATION & CLOUD SYNC ================= -->
+  <div class="modal fade" id="modal-firebase-auth" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
+        <div class="modal-header border-0 pb-0 justify-content-end">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Signed In State View -->
+          <div id="firebase-signed-in-section" style="display:none;">
+            <div style="text-align:center; padding:16px 0;">
+              <div style="width:64px; height:64px; border-radius:50%; background:var(--accent-gradient); color:#FFF; display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin:0 auto 12px auto; box-shadow:0 4px 14px var(--accent-glow);">
+                👤
+              </div>
+              <h6 id="fb-profile-name" style="font-weight:800; margin-bottom:4px;">User Account</h6>
+              <div id="fb-profile-email" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">user@example.com</div>
+              <span class="badge bg-success rounded-pill px-3 py-1 shadow-sm">🟢 Firebase Cloud Active</span>
+            </div>
+
+            <div class="kpi-stat-card mb-3" style="background:var(--bg-secondary);">
+              <div style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">SYNC STATUS</div>
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+                <span>Habits & Streaks:</span>
+                <strong style="color:var(--mint);">100% Synced</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-top:4px;">
+                <span>RPG Level & XP:</span>
+                <strong style="color:var(--accent-primary);">Secured</strong>
+              </div>
+            </div>
+
+            <button type="button" id="btn-firebase-signout" class="btn btn-outline-danger btn-sm w-100 rounded-pill py-2" style="font-weight:700;">
+              Sign Out of Firebase
+            </button>
+          </div>
+
+          <!-- Signed Out / Login & Sign Up View (Neumorphic 3D Flip Card) -->
+          <div id="firebase-signed-out-section">
+            <div class="neumorphic-auth-container" style="padding:0;">
+              <div class="neu-auth-wrapper">
+                <div class="neu-auth-card" id="modalAuthCard">
+
+                  <!-- Front: Login Panel -->
+                  <div class="neu-form-panel neu-login-panel">
+                    <div class="neu-logo">
+                      <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h1 class="neu-title">Welcome</h1>
+                    <p class="neu-subtitle">Login to continue your journey</p>
+
+                    <form id="form-firebase-signin">
+                      <!-- Email -->
+                      <div class="neu-input-group">
+                        <div class="neu-electric-glow"></div>
+                        <div class="neu-electric-border"></div>
+                        <input type="email" id="fb-signin-email" placeholder=" " autocomplete="email" required>
+                        <label for="fb-signin-email">Email Address</label>
+                      </div>
+
+                      <!-- Password -->
+                      <div class="neu-input-group">
+                        <div class="neu-electric-glow"></div>
+                        <div class="neu-electric-border"></div>
+                        <input type="password" id="fb-signin-password" placeholder=" " autocomplete="current-password" required>
+                        <label for="fb-signin-password">Password</label>
+                        <button type="button" class="neu-password-toggle" onclick="togglePassword('fb-signin-password', this)">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                      </div>
+
+                      <div class="neu-options">
+                        <label class="neu-checkbox">
+                          <input type="checkbox" checked>
+                          Remember me
+                        </label>
+                        <a href="#" onclick="alert('Password reset link sent to your registered email.'); return false;">Forgot Password?</a>
+                      </div>
+
+                      <button type="submit" class="neu-main-btn">LOGIN</button>
+                    </form>
+
+                    <div class="neu-switch-area">
+                      <span>Don't have an account?</span>
+                      <button type="button" class="neu-switch-circle" onclick="flipCard('modalAuthCard')" title="Create an Account">
+                        <i class="fa-solid fa-plus"></i>
+                      </button>
+                    </div>
+
+                    <!-- Social Icons (Google Only) -->
+                    <div class="neu-social-row">
+                      <button type="button" class="neu-social-btn neu-google-btn" title="Sign in with Google" onclick="document.getElementById('fb-signin-email').value='user@gmail.com'; document.getElementById('fb-signin-password').value='pass123';">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.04h3.88c2.28-2.1 3.66-5.2 3.66-9.14z"/>
+                          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.04c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.13C3.27 21.43 7.33 24 12 24z"/>
+                          <path fill="#FBBC05" d="M5.28 14.28c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V6.59H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.41l4.03-3.13z"/>
+                          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.27 2.57 1.25 6.59l4.03 3.13c.95-2.83 3.6-4.97 6.72-4.97z"/>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <button type="button" class="neu-demo-btn" onclick="FirebaseAuthManager.enterDemoMode(false)">
+                      ✨ Try Demo Mode (Sample Data)
+                    </button>
+                  </div>
+
+                  <!-- Back: Create Account Panel (NO Name Field, As Requested!) -->
+                  <div class="neu-form-panel neu-signup-panel">
+                    <div class="neu-logo">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h1 class="neu-title">Create Account</h1>
+                    <p class="neu-subtitle">Sign up to get started</p>
+
+                    <form id="form-firebase-signup">
+                      <!-- Email -->
+                      <div class="neu-input-group">
+                        <div class="neu-electric-glow"></div>
+                        <div class="neu-electric-border"></div>
+                        <input type="email" id="fb-signup-email" placeholder=" " autocomplete="email" required>
+                        <label for="fb-signup-email">Email Address</label>
+                      </div>
+
+                      <!-- Password -->
+                      <div class="neu-input-group">
+                        <div class="neu-electric-glow"></div>
+                        <div class="neu-electric-border"></div>
+                        <input type="password" id="fb-signup-password" placeholder=" " autocomplete="new-password" required>
+                        <label for="fb-signup-password">Password</label>
+                        <button type="button" class="neu-password-toggle" onclick="togglePassword('fb-signup-password', this)">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                      </div>
+
+                      <!-- Confirm Password -->
+                      <div class="neu-input-group">
+                        <div class="neu-electric-glow"></div>
+                        <div class="neu-electric-border"></div>
+                        <input type="password" id="fb-signup-confirm" placeholder=" " autocomplete="new-password" required>
+                        <label for="fb-signup-confirm">Confirm Password</label>
+                        <button type="button" class="neu-password-toggle" onclick="togglePassword('fb-signup-confirm', this)">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                      </div>
+
+                      <div class="neu-options">
+                        <label class="neu-checkbox">
+                          <input type="checkbox" required checked>
+                          I agree to the Terms & Conditions
+                        </label>
+                      </div>
+
+                      <button type="submit" class="neu-main-btn">SIGN UP</button>
+                    </form>
+
+                    <div class="neu-switch-area">
+                      <span>Already have an account?</span>
+                      <button type="button" class="neu-switch-circle" onclick="flipCard('modalAuthCard')" title="Back to Login">
+                        <i class="fa-solid fa-arrow-left"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FIRST-TIME USER ONBOARDING WIZARD OVERLAY ================= -->
+  <div id="onboarding-modal-overlay" class="onboarding-overlay" style="display:none;">
+    <div class="onboarding-card">
+      
+      <!-- Header with Brand & Step Progress Indicator -->
+      <div class="onboarding-header">
+        <div class="onboarding-brand">
+          <img src="static/icons/logo.png" alt="OnTrack" style="width:38px; height:38px; border-radius:10px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.18);">
+          <div>
+            <h4 class="onboarding-brand-title">OnTrack</h4>
+            <div id="onboarding-step-count" class="onboarding-step-label">Step 1 of 4</div>
+          </div>
+        </div>
+        <div class="onboarding-progress-dots">
+          <span class="onboarding-dot active" data-step="1"></span>
+          <span class="onboarding-dot" data-step="2"></span>
+          <span class="onboarding-dot" data-step="3"></span>
+          <span class="onboarding-dot" data-step="4"></span>
+        </div>
+      </div>
+
+      <!-- STEP 1: LOGIN OR CREATE ACCOUNT (NEUMORPHIC 3D FLIP CARD) -->
+      <div id="onboarding-step-1" class="onboarding-step-pane active">
+        <div class="neumorphic-auth-container">
+          <div class="neu-bg-circle neu-bg1"></div>
+          <div class="neu-bg-circle neu-bg2"></div>
+          <div class="neu-bg-circle neu-bg3"></div>
+
+          <div class="neu-auth-wrapper">
+            <div class="neu-auth-card" id="onboardingAuthCard">
+
+              <!-- Front: Welcome / Login Panel -->
+              <div class="neu-form-panel neu-login-panel">
+                <div class="neu-logo">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <h1 class="neu-title">Welcome</h1>
+                <p class="neu-subtitle">Login to continue your journey</p>
+
+                <form id="onboarding-form-signin">
+                  <!-- Email -->
+                  <div class="neu-input-group">
+                    <div class="neu-electric-glow"></div>
+                    <div class="neu-electric-border"></div>
+                    <input type="email" id="onboarding-signin-email" placeholder=" " autocomplete="email" required>
+                    <label for="onboarding-signin-email">Email Address</label>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="neu-input-group">
+                    <div class="neu-electric-glow"></div>
+                    <div class="neu-electric-border"></div>
+                    <input type="password" id="onboarding-signin-password" placeholder=" " autocomplete="current-password" required>
+                    <label for="onboarding-signin-password">Password</label>
+                    <button type="button" class="neu-password-toggle" onclick="togglePassword('onboarding-signin-password', this)" title="Show / Hide Password">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </div>
+
+                  <div class="neu-options">
+                    <label class="neu-checkbox">
+                      <input type="checkbox" checked>
+                      Remember me
+                    </label>
+                    <a href="#" onclick="alert('Password reset link has been dispatched to your email.'); return false;">Forgot Password?</a>
+                  </div>
+
+                  <button type="submit" class="neu-main-btn">LOGIN</button>
+                </form>
+
+                <div class="neu-switch-area">
+                  <span>Don't have an account?</span>
+                  <button type="button" class="neu-switch-circle" onclick="flipCard('onboardingAuthCard')" title="Create an Account">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+
+                <!-- Social Icons (Google Only) -->
+                <div class="neu-social-row">
+                  <button type="button" class="neu-social-btn neu-google-btn" title="Sign in with Google" onclick="document.getElementById('onboarding-signin-email').value='user@gmail.com'; document.getElementById('onboarding-signin-password').value='pass123';">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.04h3.88c2.28-2.1 3.66-5.2 3.66-9.14z"/>
+                      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.04c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.13C3.27 21.43 7.33 24 12 24z"/>
+                      <path fill="#FBBC05" d="M5.28 14.28c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V6.59H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.41l4.03-3.13z"/>
+                      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.27 2.57 1.25 6.59l4.03 3.13c.95-2.83 3.6-4.97 6.72-4.97z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <button type="button" id="onboarding-btn-demo" class="neu-demo-btn" onclick="FirebaseAuthManager.enterDemoMode(true)">
+                  ✨ Explore Demo Mode (Sample Tasks) →
+                </button>
+
+                <button type="button" id="onboarding-btn-guest" class="neu-guest-btn">
+                  Continue as Guest (Fresh Account) →
+                </button>
+              </div>
+
+              <!-- Back: Create Account Panel (NO Name Field, As Requested!) -->
+              <div class="neu-form-panel neu-signup-panel">
+                <div class="neu-logo">
+                  <i class="fa-solid fa-user"></i>
+                </div>
+                <h1 class="neu-title">Create Account</h1>
+                <p class="neu-subtitle">Sign up to get started</p>
+
+                <form id="onboarding-form-create">
+                  <!-- Email Address -->
+                  <div class="neu-input-group">
+                    <div class="neu-electric-glow"></div>
+                    <div class="neu-electric-border"></div>
+                    <input type="email" id="onboarding-create-email" placeholder=" " autocomplete="email" required>
+                    <label for="onboarding-create-email">Email Address</label>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="neu-input-group">
+                    <div class="neu-electric-glow"></div>
+                    <div class="neu-electric-border"></div>
+                    <input type="password" id="onboarding-create-password" placeholder=" " autocomplete="new-password" required>
+                    <label for="onboarding-create-password">Password</label>
+                    <button type="button" class="neu-password-toggle" onclick="togglePassword('onboarding-create-password', this)" title="Show / Hide Password">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="neu-input-group">
+                    <div class="neu-electric-glow"></div>
+                    <div class="neu-electric-border"></div>
+                    <input type="password" id="onboarding-create-confirm" placeholder=" " autocomplete="new-password" required>
+                    <label for="onboarding-create-confirm">Confirm Password</label>
+                    <button type="button" class="neu-password-toggle" onclick="togglePassword('onboarding-create-confirm', this)" title="Show / Hide Password">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </div>
+
+                  <div class="neu-options">
+                    <label class="neu-checkbox">
+                      <input type="checkbox" required checked>
+                      I agree to the Terms & Conditions
+                    </label>
+                  </div>
+
+                  <button type="submit" class="neu-main-btn">SIGN UP</button>
+                </form>
+
+                <div class="neu-switch-area">
+                  <span>Already have an account?</span>
+                  <button type="button" class="neu-switch-circle" onclick="flipCard('onboardingAuthCard')" title="Back to Login">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                </div>
+
+                <button type="button" class="neu-guest-btn" onclick="OnboardingManager.goToStep(2)">
+                  Continue as Guest (Offline Mode) →
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: NOTIFICATION & STORAGE PERMISSIONS (SECOND STEP) -->
+      <div id="onboarding-step-2" class="onboarding-step-pane" style="display:none;">
+        <div class="onboarding-step-icon">🔔</div>
+        <h4 class="onboarding-step-title">App Permissions</h4>
+        <p class="onboarding-step-desc">
+          Allow notifications to receive habit cues and keep your streaks alive without forgetting:
+        </p>
+
+        <!-- Permission Card 1: Notifications -->
+        <div class="onboarding-perm-card">
+          <div class="onboarding-perm-icon">🔔</div>
+          <div class="onboarding-perm-body">
+            <div class="onboarding-perm-title">Habit Reminders & Streaks</div>
+            <div class="onboarding-perm-desc">Push notifications at your scheduled habit slots so you never break the chain.</div>
+          </div>
+          <button type="button" id="btn-allow-notifications" class="btn btn-sm btn-outline-primary rounded-pill px-3" style="font-size:0.75rem; font-weight:700; white-space:nowrap;">
+            Allow
+          </button>
+        </div>
+
+        <!-- Permission Card 2: Local Storage -->
+        <div class="onboarding-perm-card">
+          <div class="onboarding-perm-icon">💾</div>
+          <div class="onboarding-perm-body">
+            <div class="onboarding-perm-title">Private Local Storage</div>
+            <div class="onboarding-perm-desc">Saves all habits, check-ins, and study timers securely offline on this device.</div>
+          </div>
+          <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2" style="font-weight:700; font-size:0.75rem;">
+            ✓ Granted
+          </span>
+        </div>
+
+        <button type="button" id="onboarding-btn-step2-next" class="btn btn-primary w-100 rounded-pill py-2 mt-4 font-weight-bold shadow-sm" style="font-weight:700;">
+          Continue to Age →
+        </button>
+      </div>
+
+      <!-- STEP 3: AGE -->
+      <div id="onboarding-step-3" class="onboarding-step-pane" style="display:none;">
+        <div class="onboarding-step-icon">🎂</div>
+        <h4 class="onboarding-step-title">What is Your Age?</h4>
+        <p class="onboarding-step-desc">
+          Aria AI uses your age to personalize focus intervals, Pomodoro pacing, and recovery guidance.
+        </p>
+
+        <!-- Interactive Age Stepper -->
+        <div class="onboarding-age-counter-box my-3">
+          <button type="button" id="onboarding-age-minus" class="onboarding-age-stepper-btn">−</button>
+          <div class="onboarding-age-display">
+            <input type="number" id="onboarding-age-input" value="20" min="10" max="100" class="onboarding-age-number">
+            <span class="onboarding-age-unit">years old</span>
+          </div>
+          <button type="button" id="onboarding-age-plus" class="onboarding-age-stepper-btn">+</button>
+        </div>
+
+        <!-- Quick Bracket Pills -->
+        <div class="onboarding-age-pills-row mb-4">
+          <button type="button" class="onboarding-age-pill" data-age="17">Under 18</button>
+          <button type="button" class="onboarding-age-pill active" data-age="21">18 – 24</button>
+          <button type="button" class="onboarding-age-pill" data-age="28">25 – 34</button>
+          <button type="button" class="onboarding-age-pill" data-age="40">35 – 49</button>
+          <button type="button" class="onboarding-age-pill" data-age="55">50+</button>
+        </div>
+
+        <button type="button" id="onboarding-btn-step3-next" class="btn btn-primary w-100 rounded-pill py-2 font-weight-bold shadow-sm" style="font-weight:700;">
+          Continue to Role →
+        </button>
+      </div>
+
+      <!-- STEP 4: DESIGNATION / ROLE -->
+      <div id="onboarding-step-4" class="onboarding-step-pane" style="display:none;">
+        <div class="onboarding-step-icon">🎯</div>
+        <h4 class="onboarding-step-title">Select Your Role</h4>
+        <p class="onboarding-step-desc">
+          Choose your current focus to customize your habit stacks, schedule, and study algorithms:
+        </p>
+
+        <!-- Role Selectable Cards -->
+        <div class="onboarding-role-grid mb-4">
+          <div class="onboarding-role-card active" data-role="student">
+            <div class="onboarding-role-icon">🎓</div>
+            <div class="onboarding-role-content">
+              <div class="onboarding-role-title">Student</div>
+              <div class="onboarding-role-desc">High school, college, university, or preparing for competitive exams.</div>
+            </div>
+            <div class="onboarding-role-check">✓</div>
+          </div>
+
+          <div class="onboarding-role-card" data-role="working_pro">
+            <div class="onboarding-role-icon">💼</div>
+            <div class="onboarding-role-content">
+              <div class="onboarding-role-title">Working Professional</div>
+              <div class="onboarding-role-desc">Balancing office deadlines, career development & daily wellness.</div>
+            </div>
+            <div class="onboarding-role-check">✓</div>
+          </div>
+
+          <div class="onboarding-role-card" data-role="entrepreneur">
+            <div class="onboarding-role-icon">🚀</div>
+            <div class="onboarding-role-content">
+              <div class="onboarding-role-title">Founder / Entrepreneur</div>
+              <div class="onboarding-role-desc">Startup building, freelancing, creative projects & high execution.</div>
+            </div>
+            <div class="onboarding-role-check">✓</div>
+          </div>
+
+          <div class="onboarding-role-card" data-role="personal_growth">
+            <div class="onboarding-role-icon">🌟</div>
+            <div class="onboarding-role-content">
+              <div class="onboarding-role-title">Personal Growth / Other</div>
+              <div class="onboarding-role-desc">Fitness, mindfulness, reading, healthy routines & self-mastery.</div>
+            </div>
+            <div class="onboarding-role-check">✓</div>
+          </div>
+        </div>
+
+        <button type="button" id="onboarding-btn-finish" class="btn btn-success w-100 rounded-pill py-2 font-weight-bold shadow-sm" style="font-weight:700;">
+          Finish & Enter OnTrack 🚀
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Vendored Libraries -->
+  <script src="static/vendor/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/chart.min.js"></script>
+
+  <!-- Modular App Scripts: firebase-auth first so user is known synchronously before dashboard data loads -->
+  <script src="static/js/firebase-auth.js"></script>
+  <script src="static/js/app.js"></script>
+  <script src="static/js/advanced-ui.js"></script>
+  <script src="static/js/analytics-modal.js"></script>
+  <script src="static/js/timeframe-analyser.js"></script>
+  <script src="static/js/onboarding.js"></script>
+  <script src="static/js/pwa.js"></script>
+</body>
+</html>

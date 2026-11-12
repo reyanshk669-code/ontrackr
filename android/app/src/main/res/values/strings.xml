@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OnTrack</string>
+    <string name="widget_name">OnTrack Quick Glance</string>
+    <string name="widget_description">1-Tap glance and tracking for your daily student habits and streaks.</string>
+</resources>

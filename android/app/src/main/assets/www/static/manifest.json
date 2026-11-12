@@ -1,0 +1,65 @@
+{
+  "id": "com.ontrack.app",
+  "name": "OnTrack: AI Habit & Focus Tracker",
+  "short_name": "OnTrack",
+  "description": "Loop-style habit tracker with EMA habit strength, Aria AI Habit Coach, Atomic Habit Stacks, and Identity Leveling RPG.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "theme_color": "#FAF7FC",
+  "background_color": "#FAF7FC",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Habits Queue",
+      "short_name": "Habits",
+      "description": "Open habit queue",
+      "url": "/#tab-tracker",
+      "icons": [{ "src": "/static/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Aria AI Coach",
+      "short_name": "Aria",
+      "description": "Chat with Aria AI habit coach",
+      "url": "/#tab-aria",
+      "icons": [{ "src": "/static/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Atomic Stacks",
+      "short_name": "Stacks",
+      "description": "View atomic habit stacks",
+      "url": "/#tab-stacks",
+      "icons": [{ "src": "/static/icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# Android & Gradle
+android/.gradle/
+android/app/build/
+android/build/
+android/captures/
+android/.cxx/
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.db
+.env
+venv/
+ENV/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

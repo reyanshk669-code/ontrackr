@@ -1,0 +1,177 @@
+/* ============================================================
+   ReviveHabit / Loop AI - Luminous Design System & Themes
+   Inspired by Loop Habit Tracker + ReviveAI Modern Ergonomics
+   ============================================================ */
+
+:root, [data-theme="light"] {
+  /* Luminous Pastel Dream Aesthetic (Default from ReviveAI Mockup) */
+  --bg-primary: #FAF7FC;
+  --bg-gradient: linear-gradient(180deg, #FAF7FD 0%, #F4EEF9 50%, #EFE8F6 100%);
+  --bg-secondary: #F0EAF7;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-hover: rgba(255, 255, 255, 0.96);
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  
+  --border-color: rgba(226, 218, 238, 0.7);
+  --border-color-strong: rgba(196, 181, 224, 0.8);
+  
+  --text-primary: #1E1B2E;
+  --text-secondary: #58536E;
+  --text-muted: #8C86A0;
+  
+  --accent-primary: #7C5CFC;
+  --accent-primary-hover: #6744ED;
+  --accent-glow: rgba(124, 92, 252, 0.28);
+  --accent-gradient: linear-gradient(135deg, #8A63F8 0%, #6839ED 100%);
+  
+  --mint: #10B981;
+  --mint-bg: rgba(16, 185, 129, 0.12);
+  --mint-border: rgba(16, 185, 129, 0.3);
+  
+  --sky: #3B82F6;
+  --sky-bg: rgba(59, 130, 246, 0.12);
+  --sky-border: rgba(59, 130, 246, 0.3);
+  
+  --peach: #FF7043;
+  --peach-bg: rgba(255, 112, 67, 0.14);
+  --peach-border: rgba(255, 112, 67, 0.35);
+  
+  --purple: #8B5CF6;
+  --purple-bg: rgba(139, 92, 246, 0.14);
+  --purple-border: rgba(139, 92, 246, 0.35);
+  
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --skipped-bg: rgba(245, 158, 11, 0.14);
+  --skipped-border: #F59E0B;
+  
+  /* Floating Dock Navigation */
+  --dock-bg: #FFFFFF;
+  --dock-border: rgba(226, 218, 238, 0.7);
+  --dock-shadow: 0 16px 40px rgba(120, 100, 170, 0.16);
+  --dock-active: #22C55E;
+  
+  --shadow-sm: 0 3px 8px rgba(130, 110, 170, 0.05);
+  --shadow-md: 0 8px 24px rgba(130, 110, 170, 0.08);
+  --shadow-lg: 0 16px 36px rgba(130, 110, 170, 0.14);
+  
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  --calendar-day-bg: rgba(255, 255, 255, 0.6);
+  --calendar-day-hover: #EDE6F7;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0F0E17;
+  --bg-gradient: linear-gradient(180deg, #13111C 0%, #0F0E17 100%);
+  --bg-secondary: #1A1726;
+  --bg-card: rgba(28, 25, 41, 0.88);
+  --bg-card-hover: rgba(38, 33, 56, 0.96);
+  --bg-glass: rgba(24, 21, 36, 0.85);
+  
+  --border-color: rgba(255, 255, 255, 0.09);
+  --border-color-strong: rgba(255, 255, 255, 0.18);
+  
+  --text-primary: #F8F7FC;
+  --text-secondary: #A6A0BC;
+  --text-muted: #6E6886;
+  
+  --accent-primary: #947BFD;
+  --accent-primary-hover: #8364FC;
+  --accent-glow: rgba(148, 123, 253, 0.35);
+  --accent-gradient: linear-gradient(135deg, #947BFD 0%, #704BF6 100%);
+  
+  --mint: #34D399;
+  --mint-bg: rgba(52, 211, 153, 0.16);
+  --mint-border: rgba(52, 211, 153, 0.35);
+  
+  --sky: #60A5FA;
+  --sky-bg: rgba(96, 165, 250, 0.16);
+  --sky-border: rgba(96, 165, 250, 0.35);
+  
+  --peach: #FB923C;
+  --peach-bg: rgba(251, 146, 60, 0.16);
+  --peach-border: rgba(251, 146, 60, 0.35);
+  
+  --purple: #A78BFA;
+  --purple-bg: rgba(167, 139, 250, 0.16);
+  --purple-border: rgba(167, 139, 250, 0.35);
+  
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --skipped-bg: rgba(251, 191, 36, 0.16);
+  --skipped-border: #FBBF24;
+  
+  --dock-bg: #1A1726;
+  --dock-border: rgba(255, 255, 255, 0.1);
+  --dock-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --dock-active: #22C55E;
+  
+  --shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
+  
+  --calendar-day-bg: rgba(255, 255, 255, 0.04);
+  --calendar-day-hover: rgba(255, 255, 255, 0.09);
+}
+
+[data-theme="paper"] {
+  --bg-primary: #F7F4EB;
+  --bg-gradient: linear-gradient(180deg, #FBF9F2 0%, #F5F1E6 100%);
+  --bg-secondary: #EBE5D5;
+  --bg-card: rgba(253, 251, 247, 0.92);
+  --bg-card-hover: #FFFFFF;
+  --bg-glass: rgba(247, 244, 235, 0.9);
+  
+  --border-color: #E2DAC8;
+  --border-color-strong: #CDC3AD;
+  
+  --text-primary: #2C261E;
+  --text-secondary: #655B4C;
+  --text-muted: #958B7B;
+  
+  --accent-primary: #92400E;
+  --accent-primary-hover: #78350F;
+  --accent-glow: rgba(146, 64, 14, 0.25);
+  --accent-gradient: linear-gradient(135deg, #A1501D 0%, #7B340B 100%);
+  
+  --mint: #2E7D32;
+  --mint-bg: rgba(46, 125, 50, 0.12);
+  --mint-border: rgba(46, 125, 50, 0.3);
+  
+  --sky: #1565C0;
+  --sky-bg: rgba(21, 101, 192, 0.12);
+  --sky-border: rgba(21, 101, 192, 0.3);
+  
+  --peach: #C2410C;
+  --peach-bg: rgba(194, 65, 12, 0.12);
+  --peach-border: rgba(194, 65, 12, 0.3);
+  
+  --purple: #6B21A8;
+  --purple-bg: rgba(107, 33, 168, 0.12);
+  --purple-border: rgba(107, 33, 168, 0.3);
+  
+  --success: #2E7D32;
+  --warning: #B45309;
+  --danger: #B91C1C;
+  --skipped-bg: rgba(180, 83, 9, 0.14);
+  --skipped-border: #B45309;
+  
+  --dock-bg: #FDFBF7;
+  --dock-border: #E2DAC8;
+  --dock-shadow: 0 16px 36px rgba(44, 38, 30, 0.12);
+  --dock-active: #22C55E;
+  
+  --shadow-sm: 0 3px 8px rgba(44, 38, 30, 0.05);
+  --shadow-md: 0 8px 24px rgba(44, 38, 30, 0.08);
+  --shadow-lg: 0 16px 36px rgba(44, 38, 30, 0.12);
+  
+  --calendar-day-bg: rgba(0, 0, 0, 0.03);
+  --calendar-day-hover: rgba(0, 0, 0, 0.06);
+}
