@@ -943,26 +943,11 @@ const AdvancedFeatures = {
         const m = bootstrap.Modal.getOrCreateInstance(modalEl);
         m.show();
       }
-    } else if (actionType === 'MICRO_DOSE') {
-      const habitId = typeof param === 'number' ? param : (AppState.habits[0]?.id || 1);
-      this.activateMicroDose(habitId, 'Habit');
-    } else if (actionType === 'VIEW_STACKS') {
-      const tabStacks = document.querySelector('.dock-btn[data-tab="tab-stacks"]');
-      if (tabStacks) tabStacks.click();
-    } else if (actionType === 'VIEW_RPG') {
-      const tabGuild = document.querySelector('.dock-btn[data-tab="tab-guild"]');
-      if (tabGuild) tabGuild.click();
-    }
-  },
-      if (modalEl && window.bootstrap) {
-        const m = bootstrap.Modal.getOrCreateInstance(modalEl);
-        m.show();
-      }
       this.showToast('⚡ Pomodoro Studio opened!');
     } else if (actionType === 'MICRO_DOSE') {
       let habitId = parseInt(param);
-      if (isNaN(habitId) && window.HabitApp && window.HabitApp.habits && window.HabitApp.habits.length > 0) {
-        habitId = window.HabitApp.habits[0].id;
+      if (isNaN(habitId) && window.AppState && window.AppState.habits && window.AppState.habits.length > 0) {
+        habitId = window.AppState.habits[0].id;
       }
       if (habitId) {
         this.activateMicroDose(habitId, 'Study Habit');
