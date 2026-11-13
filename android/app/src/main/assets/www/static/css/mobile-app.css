@@ -781,11 +781,105 @@ button:active {
   height: calc(100vh - var(--header-height) - env(safe-area-inset-top, 0px) - 110px);
   max-width: 520px;
   margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Active Chat Header (Visible in chat mode) */
+.aria-active-chat-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(122, 154, 120, 0.08);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+  animation: fadeInDown 0.25s ease-out;
+}
+
+.aria-view-container.chat-active .aria-active-chat-header {
+  display: flex;
+}
+
+.aria-active-agent-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aria-avatar-icon-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.92rem;
+  font-weight: 700;
+  box-shadow: 0 3px 8px var(--accent-glow);
+  flex-shrink: 0;
+}
+
+.aria-agent-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.aria-agent-status {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.aria-agent-status .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  display: inline-block;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.btn-aria-reset-chat {
+  background: rgba(122, 154, 120, 0.12);
+  border: 1px solid rgba(122, 154, 120, 0.28);
+  color: #385E36;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-aria-reset-chat:active {
+  transform: scale(0.93);
+  background: rgba(122, 154, 120, 0.24);
 }
 
 .aria-hero-header {
   text-align: center;
   padding: 16px 0 10px 0;
+  transition: all 0.3s ease;
+}
+
+.aria-view-container.chat-active .aria-hero-header {
+  display: none !important;
 }
 
 .aria-sparkle-halo {
@@ -842,6 +936,13 @@ button:active {
   flex-direction: column;
   gap: 10px;
   margin-bottom: 16px;
+  overflow-y: auto;
+  max-height: calc(100% - 240px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.aria-view-container.chat-active .aria-prompt-pills-wrap {
+  display: none !important;
 }
 
 .aria-prompt-pill {
@@ -857,6 +958,7 @@ button:active {
   justify-content: space-between;
   box-shadow: 0 4px 16px rgba(130, 110, 180, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9);
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
 }
 
 .aria-prompt-pill .prompt-left {
@@ -889,13 +991,59 @@ button:active {
 
 /* Chat messages list */
 .aria-chat-stream {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 12px;
-  padding: 10px 0;
+  padding: 6px 2px 14px 2px;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.aria-view-container.chat-active .aria-chat-stream {
+  display: flex !important;
+}
+
+/* Horizontal Quick Chips Row (Visible in Chat Mode) */
+.aria-quick-chips-row {
+  display: none;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  gap: 8px;
+  padding: 4px 2px 6px 2px;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+
+.aria-quick-chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+.aria-view-container.chat-active .aria-quick-chips-row {
+  display: flex;
+}
+
+.aria-mini-chip {
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(122, 154, 120, 0.3);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.aria-mini-chip:active {
+  transform: scale(0.93);
+  background: #7A9A78;
+  color: #FFFFFF;
 }
 
 .aria-message {
@@ -1022,17 +1170,24 @@ button:active {
 }
 
 .btn-aria-add-context {
-  background: rgba(0, 0, 0, 0.04);
-  border: none;
-  font-size: 1.35rem;
-  color: var(--text-secondary);
+  background: rgba(122, 154, 120, 0.12);
+  border: 1px solid rgba(122, 154, 120, 0.25);
+  font-size: 1.15rem;
+  color: #4A6E48;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-aria-add-context:active {
+  transform: scale(0.92);
+  background: rgba(122, 154, 120, 0.25);
 }
 
 .aria-input-field {
@@ -1040,8 +1195,16 @@ button:active {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.88rem;
-  color: var(--text-primary);
+  font-size: 0.94rem;
+  color: var(--text-primary) !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  padding: 4px 6px;
+}
+
+.aria-input-field::placeholder {
+  color: #8C887B;
+  opacity: 0.85;
 }
 
 .btn-aria-send-round {

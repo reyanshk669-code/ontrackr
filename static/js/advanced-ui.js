@@ -678,6 +678,9 @@ const AdvancedFeatures = {
     const chatInput = document.getElementById('aria-chat-input');
     const sendBtn = document.getElementById('btn-aria-send');
     const pillPrompts = document.querySelectorAll('.aria-prompt-pill');
+    const miniChips = document.querySelectorAll('.aria-mini-chip');
+    const resetBtn = document.getElementById('btn-aria-reset-chat');
+    const contextBtn = document.getElementById('btn-aria-context-toggle');
 
     if (sendBtn && chatInput) {
       sendBtn.onclick = () => {
@@ -708,11 +711,72 @@ const AdvancedFeatures = {
         this.askAria(prompt);
       };
     });
+
+    miniChips.forEach(chip => {
+      chip.onclick = (e) => {
+        e.preventDefault();
+        const targetChip = e.target.closest('.aria-mini-chip') || chip;
+        const prompt = targetChip.getAttribute('data-prompt') || targetChip.textContent.trim();
+        this.askAria(prompt);
+      };
+    });
+
+    if (resetBtn) {
+      resetBtn.onclick = (e) => {
+        e.preventDefault();
+        this.resetAriaChat();
+      };
+    }
+
+    if (contextBtn) {
+      contextBtn.onclick = (e) => {
+        e.preventDefault();
+        const container = document.getElementById('aria-view-container') || document.querySelector('.aria-view-container');
+        if (container) {
+          if (container.classList.contains('chat-active')) {
+            // Focus input or toggle view
+            if (chatInput) chatInput.focus();
+          } else {
+            // Activate chat mode directly
+            container.classList.add('chat-active');
+            if (chatInput) chatInput.focus();
+          }
+        }
+      };
+    }
+  },
+
+  resetAriaChat() {
+    const container = document.getElementById('aria-view-container') || document.querySelector('.aria-view-container');
+    if (container) {
+      container.classList.remove('chat-active');
+    }
+    const chatFeed = document.getElementById('aria-chat-messages');
+    if (chatFeed) {
+      chatFeed.innerHTML = `
+        <div class="aria-message aria-bot-msg">
+          <div class="aria-avatar-icon">✦</div>
+          <div class="msg-bubble" id="aria-welcome-bubble">
+            Welcome to OnTracker! You're on track with your study and consistency habits today. What would you like to accomplish next?
+          </div>
+        </div>
+      `;
+    }
+    const chatInput = document.getElementById('aria-chat-input');
+    if (chatInput) {
+      chatInput.value = '';
+    }
   },
 
   async askAria(question) {
     const chatFeed = document.getElementById('aria-chat-messages');
     if (!chatFeed || !question) return;
+
+    // Transition view to full-height active chat mode
+    const container = document.getElementById('aria-view-container') || document.querySelector('.aria-view-container');
+    if (container) {
+      container.classList.add('chat-active');
+    }
 
     // 1. Append User Message
     const userMsg = document.createElement('div');
@@ -794,6 +858,12 @@ const AdvancedFeatures = {
     `;
     chatFeed.appendChild(botMsg);
     chatFeed.scrollTo({ top: chatFeed.scrollHeight, behavior: 'smooth' });
+    setTimeout(() => {
+      chatFeed.scrollTop = chatFeed.scrollHeight;
+    }, 60);
+    setTimeout(() => {
+      chatFeed.scrollTop = chatFeed.scrollHeight;
+    }, 220);
 
     if (window.SoundEffects) window.SoundEffects.playCheck();
   },

@@ -424,6 +424,12 @@ function switchTab(tabId) {
 
   updateGlowingNavIndicator(activeIdx);
 
+  // Control Floating Action Button (+) visibility: Only show on Home / Tracker tab
+  const fab = document.querySelector('.fab-add-habit');
+  if (fab) {
+    fab.style.display = (cleanId === 'tab-tracker') ? 'flex' : 'none';
+  }
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 

@@ -229,10 +229,25 @@
 
     <!-- ================= TAB 3: ARIA AI COACH (SCREEN 6 EXACT MATCH) ================= -->
     <section id="tab-aria" class="tab-content-view">
-      <div class="aria-view-container">
+      <div id="aria-view-container" class="aria-view-container">
         
-        <!-- Hero Sparkle Halo -->
-        <div class="aria-hero-header">
+        <!-- Active Chat Header (Visible only when chatting) -->
+        <div id="aria-active-chat-header" class="aria-active-chat-header">
+          <div class="aria-active-agent-info">
+            <div class="aria-avatar-icon-sm">✦</div>
+            <div>
+              <div class="aria-agent-name">AI Guide</div>
+              <div class="aria-agent-status"><span class="status-dot"></span>Active • Habit Companion</div>
+            </div>
+          </div>
+          <button type="button" id="btn-aria-reset-chat" class="btn-aria-reset-chat" title="Start new conversation">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>New Chat</span>
+          </button>
+        </div>
+
+        <!-- Initial Welcome State: Hero Sparkle Halo -->
+        <div id="aria-hero-header" class="aria-hero-header">
           <div class="aria-sparkle-halo">
             <span class="star">✦</span>
           </div>
@@ -240,8 +255,8 @@
           <p class="aria-subtext">Ask AI Tracker Companion for routines and consistency advice.</p>
         </div>
 
-        <!-- Quick Prompt Pills (Screen 6 Glassmorphic Cards) -->
-        <div class="aria-prompt-pills-wrap">
+        <!-- Initial Welcome State: Quick Prompt Cards (Screen 6 Glassmorphic Cards) -->
+        <div id="aria-prompt-pills-wrap" class="aria-prompt-pills-wrap">
           <button class="aria-prompt-pill" data-prompt="Suggest a morning routine">
             <div class="prompt-left">
               <span>🌅</span>
@@ -272,7 +287,7 @@
           </button>
         </div>
 
-        <!-- Interactive Chat Stream -->
+        <!-- Interactive Chat Stream (Full height when chatting) -->
         <div id="aria-chat-messages" class="aria-chat-stream">
           <div class="aria-message aria-bot-msg">
             <div class="aria-avatar-icon">✦</div>
@@ -282,11 +297,21 @@
           </div>
         </div>
 
+        <!-- Horizontal Quick Chips Row (Visible during active chat) -->
+        <div id="aria-quick-chips" class="aria-quick-chips-row">
+          <button type="button" class="aria-mini-chip" data-prompt="Suggest a morning routine">🌅 Morning Routine</button>
+          <button type="button" class="aria-mini-chip" data-prompt="Help me stay consistent">🎯 Stay Consistent</button>
+          <button type="button" class="aria-mini-chip" data-prompt="Analyze all my habits and find where I struggle">📊 Analyze Habits</button>
+          <button type="button" class="aria-mini-chip" data-prompt="Define an atomic habit stack for my study schedule">⚡ Habit Stack</button>
+          <button type="button" class="aria-mini-chip" data-prompt="Give me a 7-day habit comeback blueprint">📅 7-Day Plan</button>
+          <button type="button" class="aria-mini-chip" data-prompt="I am feeling tired and procrastinating today">🌱 Stop Procrastinating</button>
+        </div>
+
         <!-- Floating Input Bar (Screen 6 bottom) -->
         <div class="aria-input-bar-wrap">
-          <button class="btn-aria-add-context" title="Attach context">+</button>
-          <input type="text" id="aria-chat-input" class="aria-input-field" placeholder="Message...">
-          <button id="btn-aria-send" class="btn-aria-send-round" title="Send">➤</button>
+          <button class="btn-aria-add-context" id="btn-aria-context-toggle" title="Suggested Prompts" type="button">✦</button>
+          <input type="text" id="aria-chat-input" class="aria-input-field" placeholder="Message..." autocomplete="off" autocorrect="off" autocapitalize="sentences">
+          <button id="btn-aria-send" class="btn-aria-send-round" title="Send" type="button">➤</button>
         </div>
 
       </div>
