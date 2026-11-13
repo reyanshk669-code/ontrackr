@@ -890,11 +890,18 @@ function renderKPICards(kpis) {
   if (falteringEl) falteringEl.textContent = String(falteringCount).padStart(2, '0');
 
   // Overall consistency rate calculated directly from day-after-day check-ins
+  const linearFill = document.getElementById('daily-progress-bar-fill');
+  const percentBadge = document.getElementById('daily-progress-percent-badge');
+  const summaryText = document.getElementById('daily-progress-summary-text');
   const ringBar = document.getElementById('daily-progress-ring-bar');
   const circumference = 2 * Math.PI * 40; // ~251.327
+
   if (rateEl) {
     if (habits.length === 0) {
       rateEl.textContent = '0%';
+      if (percentBadge) percentBadge.textContent = '0%';
+      if (linearFill) linearFill.style.width = '0%';
+      if (summaryText) summaryText.textContent = '0 tasks active — add your first habit below';
       if (ringBar) {
         ringBar.style.strokeDasharray = circumference;
         ringBar.style.strokeDashoffset = circumference;
@@ -909,6 +916,9 @@ function renderKPICards(kpis) {
       });
       const avg = totalSlots > 0 ? Math.round((totalCompleted / totalSlots) * 100) : 0;
       rateEl.textContent = `${avg}%`;
+      if (percentBadge) percentBadge.textContent = `${avg}%`;
+      if (linearFill) linearFill.style.width = `${avg}%`;
+      if (summaryText) summaryText.textContent = `${totalCompleted} of ${totalSlots} check-ins completed today`;
       if (ringBar) {
         ringBar.style.strokeDasharray = circumference;
         const offset = circumference - (circumference * (avg / 100));

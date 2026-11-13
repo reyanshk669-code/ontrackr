@@ -89,34 +89,66 @@
       <!-- Aria Oracle Predictive Failure Warning Banner -->
       <div id="aria-oracle-banner-container" style="display:none; margin-bottom:18px;"></div>
 
-      <!-- Daily Progress Hero Card (Matching Template 1 Screen 4) -->
-      <div class="template-daily-progress-card">
-        <div class="daily-progress-header">
-          <span class="daily-progress-title">Daily Progress</span>
-          <span class="daily-progress-subtitle">Consistency</span>
-        </div>
-        <div class="daily-progress-ring-container">
-          <svg class="daily-progress-svg" viewBox="0 0 100 100">
-            <circle class="daily-progress-bg-track" cx="50" cy="50" r="40"></circle>
-            <circle id="daily-progress-ring-bar" class="daily-progress-fill-track" cx="50" cy="50" r="40" stroke-dasharray="251.327" stroke-dashoffset="251.327"></circle>
-          </svg>
-          <div class="daily-progress-center-val">
-            <span id="kpi-today-rate" class="daily-progress-number">0%</span>
+      <!-- Daily Progress Linear Bar Card (Rectangular Line Progress) -->
+      <div class="daily-progress-linear-card">
+        <div class="progress-linear-top">
+          <div class="progress-linear-title-wrap">
+            <span class="progress-linear-icon">📈</span>
+            <div>
+              <div class="progress-linear-title">Daily Progress</div>
+              <div id="daily-progress-summary-text" class="progress-linear-sub">0 tasks completed today</div>
+            </div>
+          </div>
+          <div class="progress-linear-badge">
+            <span id="daily-progress-percent-badge" class="progress-percent-val">0%</span>
           </div>
         </div>
-        <div class="daily-progress-footer-stats">
-          <div class="stat-mini-pill" title="Faltering Habits">
-            <span class="pill-dot peach"></span>
-            <span><strong id="kpi-faltering-count">00</strong> Faltering</span>
+        <!-- Sleek Rectangle Line Track -->
+        <div class="progress-linear-track">
+          <div id="daily-progress-bar-fill" class="progress-linear-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- 4 Attractive KPI Metric Boxes (Percentage, Faltering, Shields, Levels) -->
+      <div class="kpi-boxes-grid">
+        <!-- Box 1: Percentage / Consistency Rate -->
+        <div class="kpi-metric-box">
+          <div class="kpi-box-top">
+            <div class="kpi-box-icon mint">🎯</div>
+            <span class="kpi-box-tag">Consistency</span>
           </div>
-          <div class="stat-mini-pill" title="Streak Shields">
-            <span class="pill-dot amber"></span>
-            <span><strong id="kpi-streak-shields">0</strong> Shields</span>
+          <div id="kpi-today-rate" class="kpi-box-number">0%</div>
+          <div class="kpi-box-caption positive" id="kpi-today-trend">Day-by-day progress</div>
+        </div>
+
+        <!-- Box 2: Faltering Habits -->
+        <div class="kpi-metric-box">
+          <div class="kpi-box-top">
+            <div class="kpi-box-icon peach">⚠️</div>
+            <span class="kpi-box-tag">Faltering</span>
           </div>
-          <div class="stat-mini-pill" title="RPG Focus Rank">
-            <span class="pill-dot mint"></span>
-            <span><strong id="kpi-rpg-level">Lvl 1</strong> <span id="kpi-rpg-title" style="display:none;">Focus Novice</span></span>
+          <div id="kpi-faltering-count" class="kpi-box-number">00</div>
+          <div class="kpi-box-caption">All habits on track</div>
+        </div>
+
+        <!-- Box 3: Streak Shields -->
+        <div class="kpi-metric-box">
+          <div class="kpi-box-top">
+            <div class="kpi-box-icon amber">🛡️</div>
+            <span class="kpi-box-tag">Shields</span>
           </div>
+          <div id="kpi-streak-shields" class="kpi-box-number">0</div>
+          <div class="kpi-box-caption" id="kpi-shields-sub">Freeze protection</div>
+        </div>
+
+        <!-- Box 4: RPG Level & Mastery -->
+        <div class="kpi-metric-box">
+          <div class="kpi-box-top">
+            <div class="kpi-box-icon sky">⭐</div>
+            <span class="kpi-box-tag">RPG Rank</span>
+          </div>
+          <div id="kpi-rpg-level" class="kpi-box-number">Lvl 1</div>
+          <div class="kpi-box-caption" id="kpi-rpg-title">Focus Novice</div>
         </div>
       </div>
 
@@ -406,6 +438,20 @@
               <span class="analyser-kpi-label">Pacesetter MVP</span>
               <span id="analyser-kpi-mvp" class="analyser-kpi-value text-info" style="font-size:0.95rem;">None</span>
             </div>
+          </div>
+
+          <!-- No Tasks Callout Banner (Shown when no tasks are entered yet) -->
+          <div id="analyser-no-tasks-callout" style="display:none; align-items:center; justify-content:space-between; background:rgba(122, 154, 120, 0.12); border:1.5px dashed var(--accent-primary, #7A9A78); border-radius:16px; padding:12px 14px; margin-bottom:12px; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:1.4rem;">🌱</span>
+              <div>
+                <div style="font-weight:800; font-size:0.84rem; color:var(--text-primary); line-height:1.2;">Enter tasks to see your daily consistency curve</div>
+                <div style="font-size:0.73rem; color:var(--text-muted);">Add habits to track your daily progress across Weekly, Monthly, & Yearly views.</div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-1" style="font-size:0.75rem; font-weight:700; white-space:nowrap;" data-bs-toggle="modal" data-bs-target="#modal-add-habit">
+              + Enter Tasks
+            </button>
           </div>
 
           <!-- Dynamic Trend Graph -->

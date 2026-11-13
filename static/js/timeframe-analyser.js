@@ -54,6 +54,14 @@ const TimeframeAnalyser = {
 
   renderUI(data) {
     const kpis = data.kpis || {};
+    const habitsBreakdown = data.habits_breakdown || [];
+    const hasTasks = habitsBreakdown.length > 0;
+
+    // Callout banner when 0 tasks entered
+    const noTasksCallout = document.getElementById('analyser-no-tasks-callout');
+    if (noTasksCallout) {
+      noTasksCallout.style.display = hasTasks ? 'none' : 'flex';
+    }
 
     // 1. Update Executive KPIs
     const elAdherence = document.getElementById('analyser-kpi-adherence');
@@ -69,13 +77,13 @@ const TimeframeAnalyser = {
     if (elMvp) elMvp.textContent = kpis.mvp_activity || 'None';
 
     const elCount = document.getElementById('analyser-activities-count');
-    if (elCount) elCount.textContent = `${data.habits_breakdown ? data.habits_breakdown.length : 0} Tracked`;
+    if (elCount) elCount.textContent = `${habitsBreakdown.length} Tracked`;
 
-    // 2. Render Chart
+    // 2. Render Chart (Always renders so the graph is always visible)
     this.renderChart(data.chart_data);
 
     // 3. Render Every Activity Breakdown Cards
-    this.renderActivitiesList(data.habits_breakdown || []);
+    this.renderActivitiesList(habitsBreakdown);
   },
 
   renderChart(chartData) {
@@ -101,13 +109,13 @@ const TimeframeAnalyser = {
             label: 'Consistency Rate %',
             data: completionRates,
             type: 'line',
-            borderColor: '#7C5CFC',
-            backgroundColor: 'rgba(124, 92, 252, 0.15)',
+            borderColor: '#7A9A78',
+            backgroundColor: 'rgba(122, 154, 120, 0.16)',
             borderWidth: 2.8,
             tension: 0.35,
             fill: true,
             yAxisID: 'y',
-            pointBackgroundColor: '#7C5CFC',
+            pointBackgroundColor: '#7A9A78',
             pointBorderColor: '#FFFFFF',
             pointBorderWidth: 2,
             pointRadius: 4,
@@ -117,8 +125,8 @@ const TimeframeAnalyser = {
             label: 'Tasks Completed',
             data: completedTasks,
             type: 'bar',
-            backgroundColor: 'rgba(16, 185, 129, 0.38)',
-            hoverBackgroundColor: 'rgba(16, 185, 129, 0.75)',
+            backgroundColor: 'rgba(122, 154, 120, 0.38)',
+            hoverBackgroundColor: 'rgba(122, 154, 120, 0.75)',
             borderRadius: 6,
             yAxisID: 'y1'
           }
@@ -131,7 +139,7 @@ const TimeframeAnalyser = {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: '#1E1B4B',
+            backgroundColor: '#202920',
             titleFont: { size: 12, weight: 'bold' },
             padding: 10,
             cornerRadius: 10,
@@ -148,7 +156,7 @@ const TimeframeAnalyser = {
         scales: {
           x: {
             grid: { display: false },
-            ticks: { font: { size: 10 }, color: '#9CA3AF' }
+            ticks: { font: { size: 10 }, color: '#7B8679' }
           },
           y: {
             type: 'linear',
@@ -159,10 +167,10 @@ const TimeframeAnalyser = {
             ticks: {
               callback: val => `${val}%`,
               font: { size: 9 },
-              color: '#7C5CFC',
+              color: '#7A9A78',
               stepSize: 25
             },
-            grid: { color: 'rgba(226, 232, 240, 0.5)' }
+            grid: { color: 'rgba(122, 154, 120, 0.14)' }
           },
           y1: {
             type: 'linear',
@@ -182,8 +190,13 @@ const TimeframeAnalyser = {
 
     if (!activities.length) {
       container.innerHTML = `
-        <div style="text-align:center; padding:16px; color:var(--text-muted); font-size:0.8rem;">
-          No activity logs recorded for this timeframe yet.
+        <div style="text-align:center; padding:22px 16px; background:var(--bg-secondary, #F7F5EE); border-radius:18px; border:1.5px dashed var(--border-color, rgba(122,154,120,0.3));">
+          <span style="font-size:1.8rem; display:block; margin-bottom:6px;">🌱</span>
+          <div style="font-weight:800; font-size:0.88rem; color:var(--text-primary); margin-bottom:3px;">No Tasks Entered Yet</div>
+          <p style="font-size:0.75rem; color:var(--text-muted); max-width:280px; margin:0 auto 12px auto;">Enter your daily tasks to track your daily progress and consistency curve across Weekly, Monthly, and Yearly timeframes.</p>
+          <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold" data-bs-toggle="modal" data-bs-target="#modal-add-habit" style="font-weight:700;">
+            + Enter Tasks
+          </button>
         </div>
       `;
       return;
