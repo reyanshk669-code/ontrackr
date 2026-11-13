@@ -392,20 +392,32 @@
 
     <!-- ================= TAB 5: SETTINGS & PERFORMANCE ANALYSER ================= -->
     <section id="tab-settings" class="tab-content-view">
-      <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:0;">
         
         <!-- Multi-Timeframe Activity Analyser Studio (Weekly / Monthly / Yearly on Every Activity) -->
-        <div class="kpi-stat-card scroll-reveal" id="card-timeframe-analyser">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+        <div class="kpi-stat-card" id="card-timeframe-analyser">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
             <div>
               <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--accent-primary); letter-spacing:0.5px;">Performance Studio</div>
               <h5 style="margin:0; font-weight:800; color:var(--text-primary);">📈 Day-after-Day Consistency Analysis</h5>
             </div>
             <span class="badge bg-primary rounded-pill px-3 shadow-sm" id="analyser-period-badge">Weekly View</span>
           </div>
-          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">
+          <p style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:12px;">
             Day-by-day analysis tracking your habit completion rate, consistency curve, and adherence trends as you check in each day.
           </p>
+
+          <!-- Dedicated "Enter Tasks to Show Analysis" Callout (Shown when no tasks entered yet) -->
+          <div id="analyser-no-tasks-callout" class="enter-task-analysis-card" style="display:flex;">
+            <div class="enter-task-badge">📊</div>
+            <div class="enter-task-info">
+              <div class="enter-task-title">Enter Tasks to Show Analysis</div>
+              <p class="enter-task-desc">Add your daily habits to view consistency curves, adherence rates, and performance analytics across Weekly, Monthly, & Yearly views.</p>
+            </div>
+            <button type="button" class="btn-enter-task-cta" data-bs-toggle="modal" data-bs-target="#modal-add-habit">
+              + Enter Tasks
+            </button>
+          </div>
 
           <!-- Timeframe Selector Pills -->
           <div class="timeframe-pills-row mb-3">
@@ -438,20 +450,6 @@
               <span class="analyser-kpi-label">Pacesetter MVP</span>
               <span id="analyser-kpi-mvp" class="analyser-kpi-value text-info" style="font-size:0.95rem;">None</span>
             </div>
-          </div>
-
-          <!-- No Tasks Callout Banner (Shown when no tasks are entered yet) -->
-          <div id="analyser-no-tasks-callout" style="display:none; align-items:center; justify-content:space-between; background:rgba(122, 154, 120, 0.12); border:1.5px dashed var(--accent-primary, #7A9A78); border-radius:16px; padding:12px 14px; margin-bottom:12px; gap:10px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="font-size:1.4rem;">🌱</span>
-              <div>
-                <div style="font-weight:800; font-size:0.84rem; color:var(--text-primary); line-height:1.2;">Enter tasks to see your daily consistency curve</div>
-                <div style="font-size:0.73rem; color:var(--text-muted);">Add habits to track your daily progress across Weekly, Monthly, & Yearly views.</div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-1" style="font-size:0.75rem; font-weight:700; white-space:nowrap;" data-bs-toggle="modal" data-bs-target="#modal-add-habit">
-              + Enter Tasks
-            </button>
           </div>
 
           <!-- Dynamic Trend Graph -->
@@ -536,7 +534,7 @@
         </div>
 
         <!-- User Profile & Focus Persona Card -->
-        <div class="kpi-stat-card scroll-reveal">
+        <div class="kpi-stat-card">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="font-size:1.3rem;">👤</span>

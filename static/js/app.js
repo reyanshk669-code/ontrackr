@@ -406,7 +406,9 @@ function switchTab(tabId) {
       window.AdvancedFeatures.observeNewElements(targetView);
     }
     if (cleanId === 'tab-settings' && window.TimeframeAnalyser) {
-      setTimeout(() => window.TimeframeAnalyser.loadAnalysis(window.TimeframeAnalyser.currentPeriod), 120);
+      const localData = window.TimeframeAnalyser.calculateLocalTimeframe(window.TimeframeAnalyser.currentPeriod);
+      window.TimeframeAnalyser.renderUI(localData);
+      setTimeout(() => window.TimeframeAnalyser.loadAnalysis(window.TimeframeAnalyser.currentPeriod), 60);
     }
   }
 

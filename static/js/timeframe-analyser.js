@@ -10,7 +10,10 @@ const TimeframeAnalyser = {
 
   init() {
     this.bindEvents();
-    this.loadAnalysis('weekly');
+    // Render immediate local fallback synchronously so screen is never blank
+    const localData = this.calculateLocalTimeframe(this.currentPeriod);
+    this.renderUI(localData);
+    this.loadAnalysis(this.currentPeriod);
   },
 
   bindEvents() {
@@ -96,9 +99,18 @@ const TimeframeAnalyser = {
     }
 
     const ctx = canvas.getContext('2d');
-    const labels = chartData.labels || [];
-    const completionRates = chartData.completion_rates || [];
-    const completedTasks = chartData.completed_tasks || chartData.focus_minutes || [];
+    const safeData = chartData || {};
+    const labels = (safeData.labels && safeData.labels.length)
+      ? safeData.labels
+      : (this.currentPeriod === 'weekly'
+          ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          : (this.currentPeriod === 'monthly' ? ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'] : ['Q1', 'Q2', 'Q3', 'Q4']));
+    const completionRates = (safeData.completion_rates && safeData.completion_rates.length)
+      ? safeData.completion_rates
+      : labels.map(() => 0);
+    const completedTasks = (safeData.completed_tasks && safeData.completed_tasks.length)
+      ? safeData.completed_tasks
+      : (safeData.focus_minutes || labels.map(() => 0));
 
     this.chartInstance = new Chart(ctx, {
       type: 'bar',
@@ -205,7 +217,7 @@ const TimeframeAnalyser = {
     container.innerHTML = activities.map(act => {
       const color = act.hex_color || '#7C5CFC';
       return `
-        <div class="analyser-activity-card scroll-reveal">
+        <div class="analyser-activity-card">
           <div class="analyser-activity-header">
             <div class="analyser-activity-title">
               <span style="width:10px; height:10px; border-radius:50%; background:${color}; display:inline-block;"></span>
