@@ -29,6 +29,16 @@ body {
   position: relative;
 }
 
+/* Ensure all input controls can accept text selection, focus and typing */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  pointer-events: auto !important;
+}
+
 /* Ambient Dreamy Background Glow Orbs */
 body::before {
   content: "";
@@ -3018,18 +3028,53 @@ button:active {
 }
 
 .form-control,
-.form-select {
+.form-select,
+input.form-control,
+.modal input {
   background-color: var(--bg-secondary, #F7F5EE) !important;
   border: 1.5px solid rgba(122, 154, 120, 0.22) !important;
-  color: var(--text-primary, #202920) !important;
+  color: #1E291E !important;
+  -webkit-text-fill-color: #1E291E !important;
+  caret-color: #7A9A78 !important;
   font-weight: 600 !important;
+  opacity: 1 !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  pointer-events: auto !important;
 }
 
 .form-control:focus,
-.form-select:focus {
+.form-select:focus,
+input.form-control:focus,
+.modal input:focus {
   background-color: #FFFFFF !important;
   border-color: var(--accent-primary, #7A9A78) !important;
-  box-shadow: 0 0 0 3px rgba(122, 154, 120, 0.20) !important;
+  color: #1E291E !important;
+  -webkit-text-fill-color: #1E291E !important;
+  caret-color: #7A9A78 !important;
+  box-shadow: 0 0 0 3px rgba(122, 154, 120, 0.22) !important;
+  outline: none !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] input.form-control,
+[data-theme="dark"] .modal input {
+  background-color: #242D25 !important;
+  border-color: rgba(122, 154, 120, 0.35) !important;
+  color: #F2F4F0 !important;
+  -webkit-text-fill-color: #F2F4F0 !important;
+  caret-color: #85A384 !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus,
+[data-theme="dark"] input.form-control:focus,
+[data-theme="dark"] .modal input:focus {
+  background-color: #1E261F !important;
+  border-color: var(--accent-primary, #85A384) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
 }
 
 /* Template 1 Habit Stacks Chain */

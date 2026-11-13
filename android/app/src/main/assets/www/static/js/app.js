@@ -473,20 +473,36 @@ function setupEventListeners() {
     });
   });
 
+  // Ensure input gets immediate soft keyboard focus when modal opens
+  const modalAddHabitEl = document.getElementById('modal-add-habit');
+  if (modalAddHabitEl) {
+    modalAddHabitEl.addEventListener('shown.bs.modal', () => {
+      setTimeout(() => {
+        const nameInput = document.getElementById('input-habit-name') || modalAddHabitEl.querySelector('input[name="name"]');
+        if (nameInput) {
+          nameInput.focus();
+        }
+      }, 60);
+    });
+  }
+
   // Save Habit Form (Reliable Instant Offline + Online Persistence)
   const formAddHabit = document.getElementById('form-add-habit');
   if (formAddHabit) {
     formAddHabit.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(formAddHabit);
-      const nameVal = (formData.get('name') || '').trim();
+      const nameInput = document.getElementById('input-habit-name');
+      const nameVal = (nameInput ? nameInput.value : (formData.get('name') || '')).trim();
       if (!nameVal) {
-        alert('Please enter a habit name.');
+        alert('Please enter a habit name (e.g. Practice Python or Morning Workout).');
+        if (nameInput) nameInput.focus();
         return;
       }
 
-      const colorVal = document.getElementById('input-habit-color')?.value || '#7C5CFC';
-      const categoryVal = (formData.get('category') || 'General').trim();
+      const colorVal = document.getElementById('input-habit-color')?.value || '#7A9A78';
+      const categoryInput = document.getElementById('input-habit-category');
+      const categoryVal = (categoryInput ? categoryInput.value : (formData.get('category') || '')).trim() || 'General';
       const habitType = formData.get('habit_type') || 'BOOLEAN';
       const targetVal = parseFloat(formData.get('target_value') || (habitType === 'MEASURABLE' ? 60 : 1.0));
       const unitVal = (formData.get('unit') || '').trim();

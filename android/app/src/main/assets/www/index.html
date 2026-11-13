@@ -783,7 +783,7 @@
   </nav>
 
   <!-- ================= MODAL: ADD NEW HABIT ================= -->
-  <div class="modal fade" id="modal-add-habit" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="modal-add-habit" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
         <form id="form-add-habit">
@@ -794,13 +794,14 @@
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label" style="font-size:0.8rem; font-weight:700;">Habit Name</label>
-              <input type="text" name="name" class="form-control rounded-pill" placeholder="e.g., Practice Python & Algorithms" required>
+              <input type="text" id="input-habit-name" name="name" class="form-control rounded-pill" placeholder="e.g., Practice Python & Algorithms" required autocomplete="off">
             </div>
             
             <div class="mb-3">
               <label class="form-label" style="font-size:0.8rem; font-weight:700;">Category</label>
-              <input type="text" name="category" class="form-control rounded-pill" placeholder="Web Dev, Core CS, Fitness..." list="category-suggestions" required>
+              <input type="text" id="input-habit-category" name="category" class="form-control rounded-pill" placeholder="General, Web Dev, Fitness..." list="category-suggestions" autocomplete="off">
               <datalist id="category-suggestions">
+                <option value="General">
                 <option value="Web Dev">
                 <option value="Core CS">
                 <option value="Exam Prep">
@@ -888,7 +889,7 @@
   </div>
 
   <!-- ================= MODAL: CREATE ATOMIC HABIT STACK ================= -->
-  <div class="modal fade" id="modal-add-stack" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="modal-add-stack" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
         <form id="form-add-stack">
@@ -928,7 +929,7 @@
   </div>
 
   <!-- ================= MODAL: MEASURABLE CHECK-IN ================= -->
-  <div class="modal fade" id="modal-measurable-checkin" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="modal-measurable-checkin" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
         <div class="modal-header border-0 pb-0">
@@ -960,7 +961,7 @@
   </div>
 
   <!-- ================= MODAL: MOBILE IN-APP HABIT DEEP-DIVE ANALYTICS ================= -->
-  <div class="modal fade" id="modal-habit-analytics" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="modal-habit-analytics" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
       <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
         <div class="modal-header border-0 pb-0">
@@ -1055,7 +1056,7 @@
   </div>
 
   <!-- ================= MODAL: USER AUTHENTICATION & CLOUD SYNC ================= -->
-  <div class="modal fade" id="modal-firebase-auth" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="modal-firebase-auth" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="border-radius:24px; border:none; box-shadow:var(--shadow-lg);">
         <div class="modal-header border-0 pb-0 justify-content-end">
