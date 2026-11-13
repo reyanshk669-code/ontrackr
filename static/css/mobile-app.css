@@ -38,7 +38,7 @@ body::before {
   width: 380px;
   height: 380px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(196, 168, 255, 0.28) 0%, rgba(196, 168, 255, 0) 70%);
+  background: radial-gradient(circle, rgba(133, 163, 132, 0.18) 0%, rgba(133, 163, 132, 0) 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -51,7 +51,7 @@ body::after {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 200, 225, 0.22) 0%, rgba(255, 200, 225, 0) 70%);
+  background: radial-gradient(circle, rgba(247, 185, 154, 0.16) 0%, rgba(247, 185, 154, 0) 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -430,14 +430,14 @@ button:active {
 .status-filter-pill:hover {
   transform: translateY(-2px);
   border-color: var(--accent-primary);
-  box-shadow: 0 6px 14px rgba(124, 92, 252, 0.15);
+  box-shadow: 0 6px 14px rgba(122, 154, 120, 0.2);
 }
 
 .status-filter-pill.active {
   background: var(--accent-gradient);
   color: #FFFFFF;
   border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 6px 18px rgba(124, 92, 252, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 6px 18px rgba(122, 154, 120, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.45);
   transform: translateY(-1px);
 }
 
@@ -703,12 +703,12 @@ button:active {
   width: 76px;
   height: 76px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(167, 139, 250, 0.35) 0%, rgba(124, 92, 252, 0.2) 100%);
+  background: linear-gradient(135deg, rgba(133, 163, 132, 0.35) 0%, rgba(110, 142, 108, 0.2) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 14px auto;
-  box-shadow: 0 0 36px rgba(139, 92, 246, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 36px rgba(122, 154, 120, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6);
   border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
@@ -734,7 +734,7 @@ button:active {
 }
 
 .aria-greeting-title span {
-  background: linear-gradient(135deg, #7C5CFC 0%, #C084FC 100%);
+  background: linear-gradient(135deg, #7A9A78 0%, #5E7C5C 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -837,7 +837,7 @@ button:active {
 .aria-action-chip {
   background: rgba(124, 92, 252, 0.1);
   border: 1px solid rgba(124, 92, 252, 0.25);
-  color: #6D28D9;
+  color: #385E36;
   border-radius: 999px;
   padding: 6px 14px;
   font-size: 0.8rem;
@@ -850,7 +850,7 @@ button:active {
 }
 
 .aria-action-chip:hover {
-  background: #7C5CFC;
+  background: #7A9A78;
   color: #FFFFFF;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(124, 92, 252, 0.3);
@@ -1189,20 +1189,20 @@ button:active {
 
 /* Glowing Shield Button */
 .btn-use-shield {
-  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #F5CE7B 0%, #D19438 100%);
+  color: #202920;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   padding: 6px 14px;
   border-radius: var(--radius-full);
   font-size: 0.76rem;
   font-weight: 800;
-  box-shadow: 0 5px 16px rgba(139, 92, 246, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 5px 16px rgba(209, 148, 56, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.45);
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-use-shield:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45);
+  box-shadow: 0 8px 22px rgba(209, 148, 56, 0.45);
 }
 
 .rpg-xp-track-bg {
@@ -1516,8 +1516,8 @@ button:active {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
-  box-shadow: 0 10px 26px rgba(34, 197, 94, 0.65), 0 0 35px rgba(34, 197, 94, 0.45);
+  background: linear-gradient(135deg, #85A384 0%, #6E8E6C 100%);
+  box-shadow: 0 10px 26px rgba(122, 154, 120, 0.65), 0 0 32px rgba(122, 154, 120, 0.45);
   border: 3.5px solid var(--dock-bg, #FFFFFF);
   pointer-events: none;
   z-index: 3;
@@ -1532,7 +1532,7 @@ button:active {
   transform: translateX(-50%);
   width: 48px;
   height: 36px;
-  background: radial-gradient(ellipse at top, rgba(34, 197, 94, 0.35) 0%, rgba(34, 197, 94, 0.1) 50%, transparent 80%);
+  background: radial-gradient(ellipse at top, rgba(122, 154, 120, 0.35) 0%, rgba(122, 154, 120, 0.1) 50%, transparent 80%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
@@ -1540,10 +1540,10 @@ button:active {
 
 @keyframes glowingPulse {
   0%, 100% {
-    box-shadow: 0 10px 24px rgba(34, 197, 94, 0.65), 0 0 32px rgba(34, 197, 94, 0.4);
+    box-shadow: 0 10px 24px rgba(122, 154, 120, 0.65), 0 0 32px rgba(122, 154, 120, 0.4);
   }
   50% {
-    box-shadow: 0 12px 30px rgba(34, 197, 94, 0.8), 0 0 42px rgba(34, 197, 94, 0.55);
+    box-shadow: 0 12px 30px rgba(122, 154, 120, 0.8), 0 0 42px rgba(122, 154, 120, 0.55);
   }
 }
 
@@ -1609,12 +1609,12 @@ button:active {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  background: var(--accent-gradient);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 28px rgba(139, 92, 246, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 28px rgba(122, 154, 120, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.5);
   border: 2px solid rgba(255, 255, 255, 0.4);
   font-size: 1.6rem;
   z-index: 1030;
@@ -1623,7 +1623,7 @@ button:active {
 
 .fab-add-habit:hover {
   transform: translateY(-3px) scale(1.08) rotate(90deg);
-  box-shadow: 0 14px 34px rgba(139, 92, 246, 0.6);
+  box-shadow: 0 14px 34px rgba(122, 154, 120, 0.6);
 }
 
 .fab-add-habit:active {
@@ -2779,4 +2779,201 @@ button:active {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
   color: #FFFFFF;
+}
+
+/* ============================================================
+   TEMPLATE 1: CALM LIGHT (SAGE GREEN, MATCHA & WARM CREAM)
+   Modern Ergonomic Pill Styling & Tactile Surfaces
+   ============================================================ */
+
+/* Primary and Action Pill Buttons */
+.btn-primary,
+.btn-action-primary,
+.btn-complete-stack,
+.btn-action-main {
+  background: var(--accent-gradient, linear-gradient(135deg, #85A384 0%, #6E8E6C 100%)) !important;
+  background-color: var(--accent-primary, #7A9A78) !important;
+  border-color: var(--accent-primary, #7A9A78) !important;
+  color: #FFFFFF !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 6px 18px rgba(122, 154, 120, 0.32) !important;
+  font-weight: 700 !important;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.btn-primary:hover,
+.btn-action-primary:hover,
+.btn-complete-stack:hover,
+.btn-action-main:hover {
+  background-color: var(--accent-primary-hover, #6A8B68) !important;
+  border-color: var(--accent-primary-hover, #6A8B68) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(122, 154, 120, 0.45) !important;
+}
+
+.btn-primary:active,
+.btn-action-primary:active {
+  transform: scale(0.96) !important;
+}
+
+/* Secondary & Neutral Pill Buttons (Not Now / Cancel / Back) */
+.btn-secondary,
+.btn-neutral-pill,
+.btn-not-now {
+  background: var(--bg-secondary, #EFECE2) !important;
+  border: 1.5px solid var(--border-color, rgba(122, 154, 120, 0.2)) !important;
+  color: var(--text-primary, #202920) !important;
+  border-radius: 9999px !important;
+  font-weight: 700 !important;
+  transition: all 0.22s ease !important;
+}
+
+.btn-secondary:hover,
+.btn-neutral-pill:hover,
+.btn-not-now:hover {
+  background: #E5E1D5 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Outline Pill Buttons */
+.btn-outline-primary {
+  color: var(--accent-primary, #7A9A78) !important;
+  border: 1.5px solid var(--accent-primary, #7A9A78) !important;
+  border-radius: 9999px !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--accent-primary, #7A9A78) !important;
+  border-color: var(--accent-primary, #7A9A78) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(122, 154, 120, 0.3) !important;
+}
+
+/* Template 1 Notification & Storage Permission Cards */
+.template-perm-card {
+  background: var(--bg-card, #FFFFFF);
+  border-radius: 26px;
+  padding: 22px 20px;
+  text-align: center;
+  border: 1.5px solid var(--border-color, rgba(122, 154, 120, 0.18));
+  box-shadow: 0 8px 24px rgba(40, 50, 40, 0.06);
+  margin-bottom: 16px;
+}
+
+.template-perm-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 14px;
+}
+
+.template-perm-badge.peach {
+  background: #FEE8DC;
+  color: #E07850;
+  box-shadow: 0 4px 16px rgba(224, 120, 80, 0.18);
+}
+
+.template-perm-badge.amber {
+  background: #FDECC8;
+  color: #D19438;
+  box-shadow: 0 4px 16px rgba(209, 148, 56, 0.18);
+}
+
+.template-perm-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary, #202920);
+  margin-bottom: 6px;
+}
+
+.template-perm-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #4D584C);
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.template-perm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Template 1 AI Guide Companion Chat Bubbles */
+.aria-message.aria-bot-msg .msg-bubble {
+  background: #D8E8F5 !important;
+  border: 1px solid rgba(90, 142, 184, 0.25) !important;
+  color: #1F261F !important;
+  box-shadow: 0 4px 16px rgba(90, 142, 184, 0.12) !important;
+  border-radius: 20px 20px 20px 6px !important;
+}
+
+.aria-message.user-msg .msg-bubble {
+  background: var(--accent-gradient, linear-gradient(135deg, #85A384 0%, #6E8E6C 100%)) !important;
+  color: #FFFFFF !important;
+  border-radius: 20px 20px 6px 20px !important;
+  box-shadow: 0 4px 14px rgba(122, 154, 120, 0.3) !important;
+}
+
+/* Template 1 Form Controls & In-App Modals */
+.modal-content {
+  background: var(--bg-card, #FFFFFF) !important;
+  border: 1.5px solid var(--border-color, rgba(122, 154, 120, 0.2)) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 20px 50px rgba(40, 50, 40, 0.12) !important;
+  color: var(--text-primary, #202920) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color, rgba(122, 154, 120, 0.15)) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color, rgba(122, 154, 120, 0.15)) !important;
+}
+
+.form-control,
+.form-select {
+  background-color: var(--bg-secondary, #F7F5EE) !important;
+  border: 1.5px solid rgba(122, 154, 120, 0.22) !important;
+  color: var(--text-primary, #202920) !important;
+  font-weight: 600 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #FFFFFF !important;
+  border-color: var(--accent-primary, #7A9A78) !important;
+  box-shadow: 0 0 0 3px rgba(122, 154, 120, 0.20) !important;
+}
+
+/* Template 1 Habit Stacks Chain */
+.stack-flow-card,
+.habit-stack-card {
+  border-radius: 24px !important;
+  border: 1.5px solid var(--border-color) !important;
+  background: var(--bg-card) !important;
+  box-shadow: 0 4px 16px rgba(40, 50, 40, 0.05) !important;
+}
+
+/* Template 1 Bottom Dock Glowing Circle */
+.nav-glowing-circle {
+  background: linear-gradient(135deg, #85A384 0%, #6E8E6C 100%) !important;
+  box-shadow: 0 10px 26px rgba(122, 154, 120, 0.65), 0 0 32px rgba(122, 154, 120, 0.45) !important;
+}
+
+.nav-glow-beam {
+  background: radial-gradient(ellipse at top, rgba(122, 154, 120, 0.35) 0%, rgba(122, 154, 120, 0.1) 50%, transparent 80%) !important;
+}
+
+/* Dynamic Greeting matching Template 1 */
+.user-greeting-section .greeting-name {
+  color: var(--text-primary);
+  font-weight: 800;
 }

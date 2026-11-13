@@ -31,8 +31,8 @@
   <!-- Top App Header -->
   <header class="app-header">
     <div class="brand-wrapper" style="display:flex; align-items:center; gap:8px;">
-      <img src="/static/icons/logo.png" alt="OnTrack Logo" style="width:28px; height:28px; border-radius:8px; object-fit:cover; box-shadow:0 2px 8px rgba(0,0,0,0.18);">
-      <div class="brand-title">OnTrack</div>
+      <span style="font-size:1.4rem;">🌱</span>
+      <div class="brand-title">OnTracker</div>
     </div>
     <div class="header-actions">
       <!-- Sound FX Toggle -->
@@ -67,7 +67,7 @@
     <section id="tab-tracker" class="tab-content-view active">
       
       <!-- Demo Mode Alert Banner -->
-      <div id="demo-mode-banner" style="display:none; background:linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color:#FFF; border-radius:16px; padding:10px 14px; margin-bottom:16px; box-shadow:0 4px 15px rgba(99, 102, 241, 0.3); align-items:center; justify-content:space-between; gap:10px;">
+      <div id="demo-mode-banner" style="display:none; background:linear-gradient(135deg, #7A9A78 0%, #5E7C5C 100%); color:#FFF; border-radius:18px; padding:10px 14px; margin-bottom:16px; box-shadow:0 4px 15px rgba(122, 154, 120, 0.3); align-items:center; justify-content:space-between; gap:10px;">
         <div style="display:flex; align-items:center; gap:8px;">
           <span style="font-size:1.2rem;">👀</span>
           <div>
@@ -75,7 +75,7 @@
             <div style="font-size:0.72rem; opacity:0.9;">Viewing sample tasks & simulated data</div>
           </div>
         </div>
-        <button type="button" class="btn btn-sm btn-light rounded-pill px-3 py-1" style="font-size:0.75rem; font-weight:800; color:#6366F1;" onclick="FirebaseAuthManager.exitDemoMode()">
+        <button type="button" class="btn btn-sm btn-light rounded-pill px-3 py-1" style="font-size:0.75rem; font-weight:800; color:#5E7C5C;" onclick="FirebaseAuthManager.exitDemoMode()">
           Exit Demo
         </button>
       </div>
@@ -89,53 +89,41 @@
       <!-- Aria Oracle Predictive Failure Warning Banner -->
       <div id="aria-oracle-banner-container" style="display:none; margin-bottom:18px;"></div>
 
-      <!-- 4 KPI Cards (Screen 2 exact match) -->
-      <div class="kpi-cards-grid">
-        <!-- Card 1: Faltering Habits -->
-        <div class="kpi-stat-card">
-          <div class="kpi-top-row">
-            <div class="kpi-icon-pill peach">⚠️</div>
-            <span class="kpi-card-title">Faltering Habits</span>
-          </div>
-          <div id="kpi-faltering-count" class="kpi-big-number">00</div>
-          <div class="kpi-trend-sub">All habits on track</div>
+      <!-- Daily Progress Hero Card (Matching Template 1 Screen 4) -->
+      <div class="template-daily-progress-card">
+        <div class="daily-progress-header">
+          <span class="daily-progress-title">Daily Progress</span>
+          <span class="daily-progress-subtitle">Consistency</span>
         </div>
-
-        <!-- Card 2: Revival / Consistency Rate -->
-        <div class="kpi-stat-card">
-          <div class="kpi-top-row">
-            <div class="kpi-icon-pill mint">🔄</div>
-            <span class="kpi-card-title">Consistency Rate</span>
+        <div class="daily-progress-ring-container">
+          <svg class="daily-progress-svg" viewBox="0 0 100 100">
+            <circle class="daily-progress-bg-track" cx="50" cy="50" r="40"></circle>
+            <circle id="daily-progress-ring-bar" class="daily-progress-fill-track" cx="50" cy="50" r="40" stroke-dasharray="251.327" stroke-dashoffset="251.327"></circle>
+          </svg>
+          <div class="daily-progress-center-val">
+            <span id="kpi-today-rate" class="daily-progress-number">0%</span>
           </div>
-          <div id="kpi-today-rate" class="kpi-big-number">0%</div>
-          <div class="kpi-trend-sub positive" id="kpi-today-trend">Day-by-day progress</div>
         </div>
-
-        <!-- Card 3: Streak Shields -->
-        <div class="kpi-stat-card">
-          <div class="kpi-top-row">
-            <div class="kpi-icon-pill purple">🛡️</div>
-            <span class="kpi-card-title">Streak Shields</span>
+        <div class="daily-progress-footer-stats">
+          <div class="stat-mini-pill" title="Faltering Habits">
+            <span class="pill-dot peach"></span>
+            <span><strong id="kpi-faltering-count">00</strong> Faltering</span>
           </div>
-          <div id="kpi-streak-shields" class="kpi-big-number">0</div>
-          <div class="kpi-trend-sub" id="kpi-shields-sub">Earned on Level Up</div>
-        </div>
-
-        <!-- Card 4: RPG Mastery Rank -->
-        <div class="kpi-stat-card">
-          <div class="kpi-top-row">
-            <div class="kpi-icon-pill sky">⭐</div>
-            <span class="kpi-card-title">RPG Rank</span>
+          <div class="stat-mini-pill" title="Streak Shields">
+            <span class="pill-dot amber"></span>
+            <span><strong id="kpi-streak-shields">0</strong> Shields</span>
           </div>
-          <div id="kpi-rpg-level" class="kpi-big-number">Lvl 1</div>
-          <div class="kpi-trend-sub" id="kpi-rpg-title">Focus Novice</div>
+          <div class="stat-mini-pill" title="RPG Focus Rank">
+            <span class="pill-dot mint"></span>
+            <span><strong id="kpi-rpg-level">Lvl 1</strong> <span id="kpi-rpg-title" style="display:none;">Focus Novice</span></span>
+          </div>
         </div>
       </div>
 
-      <!-- Section Headline: Habit Queue -->
+      <!-- Section Headline: Today's Habits (Screen 4 exact match) -->
       <div class="section-headline-row">
         <h4 class="section-title">
-          <span>Habit Queue</span>
+          <span>Today's Habits</span>
           <span id="active-habits-count-badge" class="section-counter">0 Active</span>
         </h4>
       </div>
@@ -176,14 +164,14 @@
     <section id="tab-stacks" class="tab-content-view">
       <div class="section-headline-row">
         <h4 class="section-title">
-          <span>⛓️ Atomic Habit Stacks</span>
+          <span>Habit Stacks</span>
         </h4>
-        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modal-add-stack" style="font-weight:700;">
-          + Add Stack
+        <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modal-add-stack" style="font-weight:700;">
+          + Create Stack
         </button>
       </div>
-      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
-        Anchor new habits onto existing daily routines (<em>Atomic Habits</em> by James Clear).
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:16px;">
+        Chained routines to build better patterns.
       </p>
 
       <!-- Habit Stacks Flow Visualizer -->
@@ -207,7 +195,7 @@
       </div>
     </section>
 
-    <!-- ================= TAB 3: ARIA AI HABIT COACH (SCREEN 1 EXACT MATCH) ================= -->
+    <!-- ================= TAB 3: ARIA AI COACH (SCREEN 6 EXACT MATCH) ================= -->
     <section id="tab-aria" class="tab-content-view">
       <div class="aria-view-container">
         
@@ -216,12 +204,26 @@
           <div class="aria-sparkle-halo">
             <span class="star">✦</span>
           </div>
-          <h2 class="aria-greeting-title">Hey, I'm <span>Aria</span></h2>
-          <p class="aria-subtext">Revive faltering habits with a clear AI-powered comeback plan and atomic stacks.</p>
+          <h2 class="aria-greeting-title">AI <span>Guide</span></h2>
+          <p class="aria-subtext">Ask AI Tracker Companion for routines and consistency advice.</p>
         </div>
 
-        <!-- Quick Prompt Pills (Screen 1 Glassmorphic Cards) -->
+        <!-- Quick Prompt Pills (Screen 6 Glassmorphic Cards) -->
         <div class="aria-prompt-pills-wrap">
+          <button class="aria-prompt-pill" data-prompt="Suggest a morning routine">
+            <div class="prompt-left">
+              <span>🌅</span>
+              <span>Suggest a morning routine</span>
+            </div>
+            <span class="prompt-arrow">›</span>
+          </button>
+          <button class="aria-prompt-pill" data-prompt="Help me stay consistent">
+            <div class="prompt-left">
+              <span>🎯</span>
+              <span>Help me stay consistent</span>
+            </div>
+            <span class="prompt-arrow">›</span>
+          </button>
           <button class="aria-prompt-pill" data-prompt="Analyze all my habits and find where I struggle">
             <div class="prompt-left">
               <span>📊</span>
@@ -232,21 +234,7 @@
           <button class="aria-prompt-pill" data-prompt="Define an atomic habit stack for my study schedule">
             <div class="prompt-left">
               <span>⚡</span>
-              <span>Define my habit stack</span>
-            </div>
-            <span class="prompt-arrow">›</span>
-          </button>
-          <button class="aria-prompt-pill" data-prompt="Create a 7 days comeback sprint for my missed habits">
-            <div class="prompt-left">
-              <span>📅</span>
-              <span>7 days comeback plan</span>
-            </div>
-            <span class="prompt-arrow">›</span>
-          </button>
-          <button class="aria-prompt-pill" data-prompt="I feel tired and unmotivated today, how do I start?">
-            <div class="prompt-left">
-              <span>❤️</span>
-              <span>Motivation to restart</span>
+              <span>Define an atomic habit stack</span>
             </div>
             <span class="prompt-arrow">›</span>
           </button>
@@ -257,23 +245,28 @@
           <div class="aria-message aria-bot-msg">
             <div class="aria-avatar-icon">✦</div>
             <div class="msg-bubble" id="aria-welcome-bubble">
-              Welcome to OnTrack! You're on track with your study and consistency habits today. What would you like to accomplish next?
+              Welcome to OnTracker! You're on track with your study and consistency habits today. What would you like to accomplish next?
             </div>
           </div>
         </div>
 
-        <!-- Floating Input Bar (Screen 1 bottom) -->
+        <!-- Floating Input Bar (Screen 6 bottom) -->
         <div class="aria-input-bar-wrap">
           <button class="btn-aria-add-context" title="Attach context">+</button>
-          <input type="text" id="aria-chat-input" class="aria-input-field" placeholder="Ask Aria anything about your habits...">
+          <input type="text" id="aria-chat-input" class="aria-input-field" placeholder="Message...">
           <button id="btn-aria-send" class="btn-aria-send-round" title="Send">➤</button>
         </div>
 
       </div>
     </section>
 
-    <!-- ================= TAB 4: IDENTITY LEVELING RPG & DUELS ================= -->
+    <!-- ================= TAB 4: GUILD / COMMUNITIES & RPG LEVELING (SCREEN 7 EXACT MATCH) ================= -->
     <section id="tab-rpg" class="tab-content-view">
+      <div class="section-headline-row mb-3">
+        <h4 class="section-title">
+          <span>Guild / Communities</span>
+        </h4>
+      </div>
       
       <!-- RPG Hero Character Sheet -->
       <div class="rpg-hero-card">
@@ -549,7 +542,7 @@
               <div class="toggle-setting-title">
                 <span>🌙</span> OLED Dark Mode
               </div>
-              <div class="toggle-setting-desc">Switch between Luminous Light & Midnight Dark</div>
+              <div class="toggle-setting-desc">App Theme (Calm Light / Calm Dark)</div>
             </div>
             <label class="ontrack-switch">
               <input type="checkbox" id="toggle-dark-mode">
@@ -775,7 +768,7 @@
             <!-- Loop Palette Color Picker -->
             <div class="mb-3">
               <label class="form-label" style="font-size:0.8rem; font-weight:700;">Habit Color</label>
-              <input type="hidden" id="input-habit-color" value="#7C5CFC">
+              <input type="hidden" id="input-habit-color" value="#7A9A78">
               <div id="palette-picker-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
             </div>
 
@@ -1169,7 +1162,7 @@
                         </label>
                       </div>
 
-                      <button type="submit" class="neu-main-btn">SIGN UP</button>
+                      <button type="submit" class="neu-main-btn">Get Started</button>
                     </form>
 
                     <div class="neu-switch-area">
@@ -1224,10 +1217,10 @@
               <!-- Front: Welcome / Login Panel -->
               <div class="neu-form-panel neu-login-panel">
                 <div class="neu-logo">
-                  <i class="fa-solid fa-lock"></i>
+                  🌱
                 </div>
-                <h1 class="neu-title">Welcome</h1>
-                <p class="neu-subtitle">Login to continue your journey</p>
+                <h1 class="neu-title">OnTracker</h1>
+                <p class="neu-subtitle">Track. Grow. Flow.</p>
 
                 <form id="onboarding-form-signin">
                   <!-- Email -->
@@ -1257,7 +1250,7 @@
                     <a href="#" onclick="alert('Password reset link has been dispatched to your email.'); return false;">Forgot Password?</a>
                   </div>
 
-                  <button type="submit" class="neu-main-btn">LOGIN</button>
+                  <button type="submit" class="neu-main-btn">Get Started</button>
                 </form>
 
                 <div class="neu-switch-area">
@@ -1291,10 +1284,10 @@
               <!-- Back: Create Account Panel (NO Name Field, As Requested!) -->
               <div class="neu-form-panel neu-signup-panel">
                 <div class="neu-logo">
-                  <i class="fa-solid fa-user"></i>
+                  🌱
                 </div>
-                <h1 class="neu-title">Create Account</h1>
-                <p class="neu-subtitle">Sign up to get started</p>
+                <h1 class="neu-title">OnTracker</h1>
+                <p class="neu-subtitle">Track. Grow. Flow.</p>
 
                 <form id="onboarding-form-create">
                   <!-- Email Address -->
@@ -1334,7 +1327,7 @@
                     </label>
                   </div>
 
-                  <button type="submit" class="neu-main-btn">SIGN UP</button>
+                  <button type="submit" class="neu-main-btn">Get Started</button>
                 </form>
 
                 <div class="neu-switch-area">
@@ -1354,39 +1347,39 @@
         </div>
       </div>
 
-      <!-- STEP 2: NOTIFICATION & STORAGE PERMISSIONS (SECOND STEP) -->
+      <!-- STEP 2: NOTIFICATION & STORAGE PERMISSIONS (SECOND STEP - TEMPLATE 1 DESIGN) -->
       <div id="onboarding-step-2" class="onboarding-step-pane" style="display:none;">
-        <div class="onboarding-step-icon">🔔</div>
-        <h4 class="onboarding-step-title">App Permissions</h4>
-        <p class="onboarding-step-desc">
-          Allow notifications to receive habit cues and keep your streaks alive without forgetting:
-        </p>
-
-        <!-- Permission Card 1: Notifications -->
-        <div class="onboarding-perm-card">
-          <div class="onboarding-perm-icon">🔔</div>
-          <div class="onboarding-perm-body">
-            <div class="onboarding-perm-title">Habit Reminders & Streaks</div>
-            <div class="onboarding-perm-desc">Push notifications at your scheduled habit slots so you never break the chain.</div>
+        <!-- Template 1 Permission Card 1: Notification Permission -->
+        <div class="template-perm-card">
+          <div class="template-perm-badge peach">🔔</div>
+          <div class="template-perm-title">Notification Permission</div>
+          <div class="template-perm-desc">Stay on track with friendly reminders.</div>
+          <div class="template-perm-actions">
+            <button type="button" id="btn-allow-notifications" class="btn btn-primary w-100 rounded-pill py-2" style="font-weight:700;">
+              Allow
+            </button>
+            <button type="button" class="btn btn-secondary w-100 rounded-pill py-2" style="font-weight:700;" onclick="OnboardingManager.goToStep(3)">
+              Not Now
+            </button>
           </div>
-          <button type="button" id="btn-allow-notifications" class="btn btn-sm btn-outline-primary rounded-pill px-3" style="font-size:0.75rem; font-weight:700; white-space:nowrap;">
-            Allow
-          </button>
         </div>
 
-        <!-- Permission Card 2: Local Storage -->
-        <div class="onboarding-perm-card">
-          <div class="onboarding-perm-icon">💾</div>
-          <div class="onboarding-perm-body">
-            <div class="onboarding-perm-title">Private Local Storage</div>
-            <div class="onboarding-perm-desc">Saves all habits, check-ins, and study timers securely offline on this device.</div>
+        <!-- Template 1 Permission Card 2: Storage Permission -->
+        <div class="template-perm-card mt-3">
+          <div class="template-perm-badge amber">📁</div>
+          <div class="template-perm-title">Storage Permission</div>
+          <div class="template-perm-desc">Save your backup progress and custom files.</div>
+          <div class="template-perm-actions">
+            <button type="button" class="btn btn-primary w-100 rounded-pill py-2" style="font-weight:700;" onclick="OnboardingManager.goToStep(3)">
+              Allow
+            </button>
+            <button type="button" class="btn btn-secondary w-100 rounded-pill py-2" style="font-weight:700;" onclick="OnboardingManager.goToStep(3)">
+              Not Now
+            </button>
           </div>
-          <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2" style="font-weight:700; font-size:0.75rem;">
-            ✓ Granted
-          </span>
         </div>
 
-        <button type="button" id="onboarding-btn-step2-next" class="btn btn-primary w-100 rounded-pill py-2 mt-4 font-weight-bold shadow-sm" style="font-weight:700;">
+        <button type="button" id="onboarding-btn-step2-next" class="btn btn-primary w-100 rounded-pill py-2 mt-3 font-weight-bold shadow-sm" style="font-weight:700;">
           Continue to Age →
         </button>
       </div>

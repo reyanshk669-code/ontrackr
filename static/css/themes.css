@@ -1,60 +1,66 @@
 /* ============================================================
-   ReviveHabit / Loop AI - Luminous Design System & Themes
-   Inspired by Loop Habit Tracker + ReviveAI Modern Ergonomics
+   OnTracker - Calm Design System & Themes
+   Template 1: Calm Light (Sage Green, Matcha & Warm Cream)
+   Template 2: Calm Dark (Deep Forest Charcoal & Matcha Green)
    ============================================================ */
 
 :root, [data-theme="light"] {
-  /* Luminous Pastel Dream Aesthetic (Default from ReviveAI Mockup) */
-  --bg-primary: #FAF7FC;
-  --bg-gradient: linear-gradient(180deg, #FAF7FD 0%, #F4EEF9 50%, #EFE8F6 100%);
-  --bg-secondary: #F0EAF7;
-  --bg-card: rgba(255, 255, 255, 0.88);
-  --bg-card-hover: rgba(255, 255, 255, 0.96);
-  --bg-glass: rgba(255, 255, 255, 0.85);
+  /* Template 1: Calm Light (Sage Green, Matcha & Warm Cream) */
+  --bg-primary: #F7F5EE;
+  --bg-gradient: linear-gradient(180deg, #FBF9F4 0%, #F7F5EE 50%, #F1EFE6 100%);
+  --bg-secondary: #EFECE2;
+  --bg-card: rgba(255, 255, 255, 0.94);
+  --bg-card-hover: #FFFFFF;
+  --bg-glass: rgba(247, 245, 238, 0.88);
   
-  --border-color: rgba(226, 218, 238, 0.7);
-  --border-color-strong: rgba(196, 181, 224, 0.8);
+  --border-color: rgba(122, 154, 120, 0.18);
+  --border-color-strong: rgba(122, 154, 120, 0.35);
   
-  --text-primary: #1E1B2E;
-  --text-secondary: #58536E;
-  --text-muted: #8C86A0;
+  --text-primary: #202920;
+  --text-secondary: #4D584C;
+  --text-muted: #7B8679;
   
-  --accent-primary: #7C5CFC;
-  --accent-primary-hover: #6744ED;
-  --accent-glow: rgba(124, 92, 252, 0.28);
-  --accent-gradient: linear-gradient(135deg, #8A63F8 0%, #6839ED 100%);
+  --accent-primary: #7A9A78;
+  --accent-primary-hover: #6A8B68;
+  --accent-glow: rgba(122, 154, 120, 0.30);
+  --accent-gradient: linear-gradient(135deg, #85A384 0%, #6E8E6C 100%);
   
-  --mint: #10B981;
-  --mint-bg: rgba(16, 185, 129, 0.12);
-  --mint-border: rgba(16, 185, 129, 0.3);
+  /* Palette Tokens from Template 1 */
+  --mint: #7A9A78;
+  --mint-bg: rgba(122, 154, 120, 0.14);
+  --mint-border: rgba(122, 154, 120, 0.32);
   
-  --sky: #3B82F6;
-  --sky-bg: rgba(59, 130, 246, 0.12);
-  --sky-border: rgba(59, 130, 246, 0.3);
+  --sky: #5A8EB8;
+  --sky-bg: rgba(216, 232, 245, 0.7);
+  --sky-border: rgba(90, 142, 184, 0.32);
   
-  --peach: #FF7043;
-  --peach-bg: rgba(255, 112, 67, 0.14);
-  --peach-border: rgba(255, 112, 67, 0.35);
+  --peach: #E07850;
+  --peach-bg: rgba(254, 232, 220, 0.85);
+  --peach-border: rgba(247, 185, 154, 0.45);
   
-  --purple: #8B5CF6;
-  --purple-bg: rgba(139, 92, 246, 0.14);
-  --purple-border: rgba(139, 92, 246, 0.35);
+  --amber: #D19438;
+  --amber-bg: rgba(253, 236, 200, 0.85);
+  --amber-border: rgba(245, 206, 123, 0.45);
   
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --skipped-bg: rgba(245, 158, 11, 0.14);
-  --skipped-border: #F59E0B;
+  --purple: #857DA6;
+  --purple-bg: rgba(133, 125, 166, 0.14);
+  --purple-border: rgba(133, 125, 166, 0.32);
   
-  /* Floating Dock Navigation */
+  --success: #7A9A78;
+  --warning: #D19438;
+  --danger: #D9534F;
+  --skipped-bg: rgba(245, 206, 123, 0.18);
+  --skipped-border: #D19438;
+  
+  /* Floating Dock Navigation (Matching Template 1) */
   --dock-bg: #FFFFFF;
-  --dock-border: rgba(226, 218, 238, 0.7);
-  --dock-shadow: 0 16px 40px rgba(120, 100, 170, 0.16);
-  --dock-active: #22C55E;
+  --dock-border: rgba(122, 154, 120, 0.18);
+  --dock-shadow: 0 16px 40px rgba(40, 50, 40, 0.08);
+  --dock-active: #7A9A78;
   
-  --shadow-sm: 0 3px 8px rgba(130, 110, 170, 0.05);
-  --shadow-md: 0 8px 24px rgba(130, 110, 170, 0.08);
-  --shadow-lg: 0 16px 36px rgba(130, 110, 170, 0.14);
+  --shadow-sm: 0 3px 8px rgba(40, 50, 40, 0.04);
+  --shadow-md: 0 8px 24px rgba(40, 50, 40, 0.06);
+  --shadow-lg: 0 16px 36px rgba(40, 50, 40, 0.10);
   
   --radius-xs: 8px;
   --radius-sm: 12px;
@@ -62,115 +68,124 @@
   --radius-lg: 24px;
   --radius-full: 9999px;
   
-  --calendar-day-bg: rgba(255, 255, 255, 0.6);
-  --calendar-day-hover: #EDE6F7;
+  --calendar-day-bg: rgba(255, 255, 255, 0.7);
+  --calendar-day-hover: #EFECE2;
 }
 
 [data-theme="dark"] {
-  --bg-primary: #0F0E17;
-  --bg-gradient: linear-gradient(180deg, #13111C 0%, #0F0E17 100%);
-  --bg-secondary: #1A1726;
-  --bg-card: rgba(28, 25, 41, 0.88);
-  --bg-card-hover: rgba(38, 33, 56, 0.96);
-  --bg-glass: rgba(24, 21, 36, 0.85);
+  /* Template 2: Calm Dark (Matcha Charcoal) */
+  --bg-primary: #1A211B;
+  --bg-gradient: linear-gradient(180deg, #1E261F 0%, #151A15 100%);
+  --bg-secondary: #242D25;
+  --bg-card: rgba(32, 41, 33, 0.90);
+  --bg-card-hover: rgba(40, 52, 42, 0.96);
+  --bg-glass: rgba(26, 33, 27, 0.88);
   
-  --border-color: rgba(255, 255, 255, 0.09);
-  --border-color-strong: rgba(255, 255, 255, 0.18);
+  --border-color: rgba(122, 154, 120, 0.20);
+  --border-color-strong: rgba(122, 154, 120, 0.38);
   
-  --text-primary: #F8F7FC;
-  --text-secondary: #A6A0BC;
-  --text-muted: #6E6886;
+  --text-primary: #F2F4F0;
+  --text-secondary: #B4BEB2;
+  --text-muted: #7E8A7C;
   
-  --accent-primary: #947BFD;
-  --accent-primary-hover: #8364FC;
-  --accent-glow: rgba(148, 123, 253, 0.35);
-  --accent-gradient: linear-gradient(135deg, #947BFD 0%, #704BF6 100%);
+  --accent-primary: #85A384;
+  --accent-primary-hover: #96B495;
+  --accent-glow: rgba(133, 163, 132, 0.35);
+  --accent-gradient: linear-gradient(135deg, #85A384 0%, #6E8E6C 100%);
   
-  --mint: #34D399;
-  --mint-bg: rgba(52, 211, 153, 0.16);
-  --mint-border: rgba(52, 211, 153, 0.35);
+  --mint: #85A384;
+  --mint-bg: rgba(133, 163, 132, 0.18);
+  --mint-border: rgba(133, 163, 132, 0.35);
   
-  --sky: #60A5FA;
-  --sky-bg: rgba(96, 165, 250, 0.16);
-  --sky-border: rgba(96, 165, 250, 0.35);
+  --sky: #6FA2CC;
+  --sky-bg: rgba(111, 162, 204, 0.18);
+  --sky-border: rgba(111, 162, 204, 0.35);
   
-  --peach: #FB923C;
-  --peach-bg: rgba(251, 146, 60, 0.16);
-  --peach-border: rgba(251, 146, 60, 0.35);
+  --peach: #F09A7A;
+  --peach-bg: rgba(240, 154, 122, 0.18);
+  --peach-border: rgba(240, 154, 122, 0.35);
   
-  --purple: #A78BFA;
-  --purple-bg: rgba(167, 139, 250, 0.16);
-  --purple-border: rgba(167, 139, 250, 0.35);
+  --amber: #E2B663;
+  --amber-bg: rgba(226, 182, 99, 0.18);
+  --amber-border: rgba(226, 182, 99, 0.35);
   
-  --success: #34D399;
-  --warning: #FBBF24;
-  --danger: #F87171;
-  --skipped-bg: rgba(251, 191, 36, 0.16);
-  --skipped-border: #FBBF24;
+  --purple: #A29ABF;
+  --purple-bg: rgba(162, 154, 191, 0.18);
+  --purple-border: rgba(162, 154, 191, 0.35);
   
-  --dock-bg: #1A1726;
-  --dock-border: rgba(255, 255, 255, 0.1);
-  --dock-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-  --dock-active: #22C55E;
+  --success: #85A384;
+  --warning: #E2B663;
+  --danger: #E57373;
+  --skipped-bg: rgba(226, 182, 99, 0.18);
+  --skipped-border: #E2B663;
   
-  --shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
+  --dock-bg: #202920;
+  --dock-border: rgba(122, 154, 120, 0.22);
+  --dock-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --dock-active: #85A384;
   
-  --calendar-day-bg: rgba(255, 255, 255, 0.04);
-  --calendar-day-hover: rgba(255, 255, 255, 0.09);
+  --shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.55);
+  
+  --calendar-day-bg: rgba(255, 255, 255, 0.05);
+  --calendar-day-hover: rgba(255, 255, 255, 0.10);
 }
 
 [data-theme="paper"] {
-  --bg-primary: #F7F4EB;
-  --bg-gradient: linear-gradient(180deg, #FBF9F2 0%, #F5F1E6 100%);
-  --bg-secondary: #EBE5D5;
-  --bg-card: rgba(253, 251, 247, 0.92);
+  --bg-primary: #F5F2E8;
+  --bg-gradient: linear-gradient(180deg, #FBF8F0 0%, #F1ECE0 100%);
+  --bg-secondary: #EAE4D4;
+  --bg-card: rgba(254, 252, 248, 0.94);
   --bg-card-hover: #FFFFFF;
-  --bg-glass: rgba(247, 244, 235, 0.9);
+  --bg-glass: rgba(245, 242, 232, 0.90);
   
-  --border-color: #E2DAC8;
-  --border-color-strong: #CDC3AD;
+  --border-color: #DFD7C4;
+  --border-color-strong: #CFC5AE;
   
-  --text-primary: #2C261E;
-  --text-secondary: #655B4C;
-  --text-muted: #958B7B;
+  --text-primary: #28241D;
+  --text-secondary: #5D5446;
+  --text-muted: #8E8472;
   
-  --accent-primary: #92400E;
-  --accent-primary-hover: #78350F;
-  --accent-glow: rgba(146, 64, 14, 0.25);
-  --accent-gradient: linear-gradient(135deg, #A1501D 0%, #7B340B 100%);
+  --accent-primary: #6E8B6C;
+  --accent-primary-hover: #5A7558;
+  --accent-glow: rgba(110, 139, 108, 0.25);
+  --accent-gradient: linear-gradient(135deg, #7A9A78 0%, #5E7C5C 100%);
   
-  --mint: #2E7D32;
-  --mint-bg: rgba(46, 125, 50, 0.12);
-  --mint-border: rgba(46, 125, 50, 0.3);
+  --mint: #6E8B6C;
+  --mint-bg: rgba(110, 139, 108, 0.14);
+  --mint-border: rgba(110, 139, 108, 0.32);
   
-  --sky: #1565C0;
-  --sky-bg: rgba(21, 101, 192, 0.12);
-  --sky-border: rgba(21, 101, 192, 0.3);
+  --sky: #4A7A9B;
+  --sky-bg: rgba(74, 122, 155, 0.14);
+  --sky-border: rgba(74, 122, 155, 0.32);
   
-  --peach: #C2410C;
-  --peach-bg: rgba(194, 65, 12, 0.12);
-  --peach-border: rgba(194, 65, 12, 0.3);
+  --peach: #C86848;
+  --peach-bg: rgba(200, 104, 72, 0.14);
+  --peach-border: rgba(200, 104, 72, 0.32);
   
-  --purple: #6B21A8;
-  --purple-bg: rgba(107, 33, 168, 0.12);
-  --purple-border: rgba(107, 33, 168, 0.3);
+  --amber: #B88328;
+  --amber-bg: rgba(184, 131, 40, 0.14);
+  --amber-border: rgba(184, 131, 40, 0.32);
   
-  --success: #2E7D32;
-  --warning: #B45309;
-  --danger: #B91C1C;
-  --skipped-bg: rgba(180, 83, 9, 0.14);
-  --skipped-border: #B45309;
+  --purple: #786C94;
+  --purple-bg: rgba(120, 108, 148, 0.14);
+  --purple-border: rgba(120, 108, 148, 0.32);
   
-  --dock-bg: #FDFBF7;
-  --dock-border: #E2DAC8;
-  --dock-shadow: 0 16px 36px rgba(44, 38, 30, 0.12);
-  --dock-active: #22C55E;
+  --success: #6E8B6C;
+  --warning: #B88328;
+  --danger: #B34A4A;
+  --skipped-bg: rgba(184, 131, 40, 0.14);
+  --skipped-border: #B88328;
   
-  --shadow-sm: 0 3px 8px rgba(44, 38, 30, 0.05);
-  --shadow-md: 0 8px 24px rgba(44, 38, 30, 0.08);
-  --shadow-lg: 0 16px 36px rgba(44, 38, 30, 0.12);
+  --dock-bg: #FCFAF5;
+  --dock-border: #DFD7C4;
+  --dock-shadow: 0 16px 36px rgba(40, 36, 29, 0.10);
+  --dock-active: #6E8B6C;
+  
+  --shadow-sm: 0 3px 8px rgba(40, 36, 29, 0.05);
+  --shadow-md: 0 8px 24px rgba(40, 36, 29, 0.08);
+  --shadow-lg: 0 16px 36px rgba(40, 36, 29, 0.12);
   
   --calendar-day-bg: rgba(0, 0, 0, 0.03);
   --calendar-day-hover: rgba(0, 0, 0, 0.06);

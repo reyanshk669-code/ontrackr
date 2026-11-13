@@ -100,18 +100,18 @@ function getOrGenerate7Dates() {
 }
 window.getOrGenerate7Dates = getOrGenerate7Dates;
 
-// Loop Material Colors Palette
+// Loop Material Colors Palette (Template 1 Calm Light Default)
 const LOOP_MATERIAL_PALETTE = [
-  { name: 'Purple', hex: '#7C5CFC' },
-  { name: 'Mint Green', hex: '#10B981' },
-  { name: 'Sky Blue', hex: '#3B82F6' },
-  { name: 'Peach', hex: '#FF7043' },
-  { name: 'Indigo', hex: '#6366F1' },
-  { name: 'Pink', hex: '#EC4899' },
-  { name: 'Amber', hex: '#F59E0B' },
-  { name: 'Teal', hex: '#14B8A6' },
-  { name: 'Red', hex: '#EF4444' },
-  { name: 'Blue Grey', hex: '#64748B' }
+  { name: 'Sage Green', hex: '#7A9A78' },
+  { name: 'Matcha', hex: '#85A384' },
+  { name: 'Peach', hex: '#F7B99A' },
+  { name: 'Buttercream Amber', hex: '#F5CE7B' },
+  { name: 'Sky Blue', hex: '#5A8EB8' },
+  { name: 'Muted Thistle', hex: '#857DA6' },
+  { name: 'Teal', hex: '#589A8D' },
+  { name: 'Terracotta', hex: '#D97757' },
+  { name: 'Forest', hex: '#4E6B4C' },
+  { name: 'Earth Slate', hex: '#6D776C' }
 ];
 
 // SVG Icons
@@ -890,9 +890,15 @@ function renderKPICards(kpis) {
   if (falteringEl) falteringEl.textContent = String(falteringCount).padStart(2, '0');
 
   // Overall consistency rate calculated directly from day-after-day check-ins
+  const ringBar = document.getElementById('daily-progress-ring-bar');
+  const circumference = 2 * Math.PI * 40; // ~251.327
   if (rateEl) {
     if (habits.length === 0) {
       rateEl.textContent = '0%';
+      if (ringBar) {
+        ringBar.style.strokeDasharray = circumference;
+        ringBar.style.strokeDashoffset = circumference;
+      }
     } else {
       let totalSlots = 0;
       let totalCompleted = 0;
@@ -903,6 +909,11 @@ function renderKPICards(kpis) {
       });
       const avg = totalSlots > 0 ? Math.round((totalCompleted / totalSlots) * 100) : 0;
       rateEl.textContent = `${avg}%`;
+      if (ringBar) {
+        ringBar.style.strokeDasharray = circumference;
+        const offset = circumference - (circumference * (avg / 100));
+        ringBar.style.strokeDashoffset = offset;
+      }
     }
   }
 }
