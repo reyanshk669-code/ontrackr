@@ -239,6 +239,21 @@ const FirebaseAuthManager = {
   },
 
   setupUI() {
+    // Dynamic floating label & input value tracking for all auth inputs
+    document.querySelectorAll('.neu-input-group input').forEach(input => {
+      const updateValueClass = () => {
+        if (input.value && input.value.trim().length > 0) {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+      };
+      input.addEventListener('input', updateValueClass);
+      input.addEventListener('change', updateValueClass);
+      input.addEventListener('blur', updateValueClass);
+      updateValueClass();
+    });
+
     // Form Sign In
     const formSignIn = document.getElementById('form-firebase-signin');
     if (formSignIn) {

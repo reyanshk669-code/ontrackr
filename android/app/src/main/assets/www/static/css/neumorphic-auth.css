@@ -56,21 +56,16 @@
 .neu-auth-wrapper {
   width: 100%;
   max-width: 385px;
-  perspective: 1600px;
   position: relative;
   z-index: 2;
+  overflow: hidden;
+  border-radius: 32px;
 }
 
 .neu-auth-card {
   position: relative;
   width: 100%;
   min-height: 560px;
-  transform-style: preserve-3d;
-  transition: transform 0.85s cubic-bezier(.34, 1.56, .64, 1);
-}
-
-.neu-auth-card.flipped {
-  transform: rotateY(180deg);
 }
 
 .neu-form-panel {
@@ -81,16 +76,47 @@
   background: var(--bg-card, #FFFFFF);
   border: 1.5px solid var(--border-color, rgba(122, 154, 120, 0.18));
   box-shadow: 0 16px 40px rgba(40, 50, 40, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   color: var(--text-primary, #202920);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, visibility 0.35s;
 }
 
+/* Front: Login Panel */
+.neu-login-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* When flipped, Login slides out to the left */
+.neu-auth-card.flipped .neu-login-panel {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-105%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Back: Create Account Panel (Zero 3D rotation, perfectly visible inputs) */
 .neu-signup-panel {
-  transform: rotateY(180deg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(105%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* When flipped, Create Account slides smoothly to center */
+.neu-auth-card.flipped .neu-signup-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 5;
 }
 
 /* Template 1 Sprout Logo Container */
@@ -165,20 +191,44 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  border: none;
-  outline: none;
-  border-radius: 9999px;
-  background: var(--bg-secondary, #F7F5EE);
-  color: var(--text-primary, #202920);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 0 46px 0 20px;
-  z-index: 20;
-  transition: background-color 0.2s ease;
+  border: 1.5px solid rgba(122, 154, 120, 0.22) !important;
+  outline: none !important;
+  border-radius: 9999px !important;
+  background: #FFFFFF !important;
+  color: #1A241A !important;
+  -webkit-text-fill-color: #1A241A !important;
+  caret-color: #385E36 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  padding: 0 46px 0 20px !important;
+  z-index: 20 !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  pointer-events: auto !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 .neu-input-group input:focus {
-  background: #FFFFFF;
+  background: #FFFFFF !important;
+  border-color: var(--accent-primary, #7A9A78) !important;
+  color: #1A241A !important;
+  -webkit-text-fill-color: #1A241A !important;
+}
+
+[data-theme="dark"] .neu-input-group input {
+  background: #1C261C !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  caret-color: #85A384 !important;
+  border-color: rgba(133, 163, 132, 0.35) !important;
+}
+
+[data-theme="dark"] .neu-input-group input:focus {
+  background: #233222 !important;
+  border-color: #85A384 !important;
+  box-shadow: 0 0 0 3px rgba(133, 163, 132, 0.25) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
 }
 
 .neu-input-group label {
@@ -186,7 +236,7 @@
   left: 20px;
   top: 16px;
   z-index: 30;
-  color: var(--text-muted, #7B8679);
+  color: #7B8679;
   font-size: 13.5px;
   font-weight: 500;
   pointer-events: none;
@@ -194,18 +244,20 @@
 }
 
 .neu-input-group input:focus + label,
-.neu-input-group input:not(:placeholder-shown) + label {
-  top: -10px;
-  left: 18px;
-  padding: 1px 10px;
-  border-radius: 999px;
-  color: #FFFFFF;
-  background: var(--accent-primary, #7A9A78);
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 15px;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(122, 154, 120, 0.3);
+.neu-input-group input:not(:placeholder-shown) + label,
+.neu-input-group input.has-value + label {
+  top: -10px !important;
+  left: 18px !important;
+  padding: 1px 10px !important;
+  border-radius: 999px !important;
+  color: #FFFFFF !important;
+  background: var(--accent-primary, #7A9A78) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 15px !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 6px rgba(122, 154, 120, 0.3) !important;
+  z-index: 40 !important;
 }
 
 .neu-password-toggle {
