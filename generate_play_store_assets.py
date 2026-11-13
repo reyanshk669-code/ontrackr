@@ -83,8 +83,8 @@ badge_text = "✦ NEXT-GEN HABIT & FOCUS ENGINE"
 draw.rounded_rectangle([text_x, 115, text_x + 360, 150], radius=18, fill=(99, 102, 241, 80), outline=(139, 92, 246, 200))
 draw.text((text_x + 18, 123), badge_text, font=font_badge, fill=(224, 231, 255))
 
-# Title: "OnTrack"
-draw.text((text_x, 168), "OnTrack", font=font_title, fill=(255, 255, 255))
+# Title: "OnTracker"
+draw.text((text_x, 168), "OnTracker", font=font_title, fill=(255, 255, 255))
 
 # Subtitle / Tagline
 draw.text((text_x, 250), "Build Unbreakable Habits.", font=font_sub, fill=(241, 245, 249))
