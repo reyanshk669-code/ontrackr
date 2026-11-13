@@ -10,7 +10,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.reyansh.ontrack"
+        applicationId = "com.reyansh.OnTracker"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

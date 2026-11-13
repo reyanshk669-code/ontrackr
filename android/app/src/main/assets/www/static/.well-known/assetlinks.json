@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.habitwall.studentapp",
+      "package_name": "com.reyansh.OnTracker",
       "sha256_cert_fingerprints": [
         "14:6D:E9:7D:0F:52:AB:FC:0E:98:90:54:19:D6:70:C7:E2:E3:69:B8:31:70:93:47:19:42:30:1F:B4:8A:27:01"
       ]
